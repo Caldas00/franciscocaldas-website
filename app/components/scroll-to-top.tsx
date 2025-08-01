@@ -35,20 +35,20 @@ export default function ScrollToTop({ secondaryColor }: ScrollToTopProps) {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-8 right-8 z-40 p-3 bg-transparent border border-white text-white transition-all duration-300 hover:text-black"
+      className="fixed bottom-8 right-8 z-40 border border-white bg-black p-3 text-white hover:text-black transition-colors duration-300"
       style={{
         "--hover-bg": secondaryColor,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.backgroundColor = secondaryColor
-        e.currentTarget.style.borderColor = secondaryColor
+        e.currentTarget.style.color = "black"
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = "transparent"
-        e.currentTarget.style.borderColor = "white"
+        e.currentTarget.style.backgroundColor = "black"
+        e.currentTarget.style.color = "white"
       }}
     >
-      <ChevronUp className="w-5 h-5" />
+      <ChevronUp className="w-6 h-6" />
     </button>
   )
 }

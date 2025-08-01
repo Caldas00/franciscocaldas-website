@@ -1,77 +1,68 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 
-const ASCII_TRAIL_CHARS = ["█", "▓", "▒", "░", "▄", "▀", "■", "□"]
-
-interface TrailPoint {
+interface Particle {
   id: number
   x: number
   y: number
-  char: string
   opacity: number
-  age: number
+  char: string
 }
 
+const ASCII_CHARS = ["*", "+", "x", "o", ".", "-", "|", "/", "\\", "^", "~"]
+
 export default function CursorTrail() {
-  const [trail, setTrail] = useState<TrailPoint[]>([])
-  const mousePos = useRef({ x: 0, y: 0 })
+  const [particles, setParticles] = useState<Particle[]>([])
 
   useEffect(() => {
+    let particleId = 0
+
     const handleMouseMove = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY }
+      const newParticle: Particle = {
+        id: particleId++,
+        x: e.clientX,
+        y: e.clientY,
+        opacity: 1,
+        char: ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)],
+      }
 
-      setTrail((prev) => {
-        const newPoint: TrailPoint = {
-          id: Date.now() + Math.random(),
-          x: e.clientX,
-          y: e.clientY,
-          char: ASCII_TRAIL_CHARS[Math.floor(Math.random() * ASCII_TRAIL_CHARS.length)],
-          opacity: 1,
-          age: 0,
-        }
-
-        return [...prev, newPoint].slice(-15) // Keep only last 15 points
-      })
+      setParticles((prev) => [...prev.slice(-15), newParticle])
     }
-
-    const updateTrail = () => {
-      setTrail((prev) =>
-        prev
-          .map((point) => ({
-            ...point,
-            age: point.age + 1,
-            opacity: Math.max(0, 1 - point.age * 0.1),
-          }))
-          .filter((point) => point.opacity > 0),
-      )
-    }
-
-    const trailTimer = setInterval(updateTrail, 50)
 
     window.addEventListener("mousemove", handleMouseMove)
 
+    const interval = setInterval(() => {
+      setParticles((prev) =>
+        prev
+          .map((particle) => ({
+            ...particle,
+            opacity: particle.opacity - 0.08,
+          }))
+          .filter((particle) => particle.opacity > 0),
+      )
+    }, 60)
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
-      clearInterval(trailTimer)
+      clearInterval(interval)
     }
   }, [])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-50">
-      {trail.map((point) => (
+    <div className="fixed inset-0 pointer-events-none z-30">
+      {particles.map((particle) => (
         <div
-          key={point.id}
-          className="absolute text-[#f4f4f4] font-mono text-sm select-none"
+          key={particle.id}
+          className="absolute text-white font-mono text-sm select-none"
           style={{
-            left: point.x,
-            top: point.y,
-            opacity: point.opacity,
-            transform: "translate(-50%, -50%)",
-            transition: "opacity 0.1s ease-out",
+            left: particle.x - 6,
+            top: particle.y - 8,
+            opacity: particle.opacity * 0.6,
+            transform: `scale(${particle.opacity})`,
           }}
         >
-          {point.char}
+          {particle.char}
         </div>
       ))}
     </div>
