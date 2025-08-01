@@ -30,9 +30,11 @@ export default function LoadingScreen() {
   const progressBar = "#".repeat(filledLength) + "-".repeat(emptyLength)
 
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
-      <div className="font-mono text-[#7399C6] text-lg">
-        {progressBar} ({Math.floor(progress)}%)
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-4">
+      <div className="font-mono text-[#7399C6] text-base md:text-lg text-center">
+        <div className="mb-4 text-sm md:text-base opacity-80">Loading Portfolio...</div>
+        <div className="text-lg md:text-xl">{progressBar}</div>
+        <div className="mt-2 text-sm md:text-base">({Math.floor(progress)}%)</div>
       </div>
     </div>
   )

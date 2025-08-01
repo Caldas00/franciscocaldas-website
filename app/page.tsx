@@ -230,11 +230,11 @@ export default function Portfolio() {
       <ScrollToTop secondaryColor={secondaryColor} />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-8">
+      <section className="min-h-screen flex items-center justify-center px-4 md:px-8">
         <div className="text-center max-w-5xl mx-auto">
-          <div className="mb-16">
+          <div className="mb-8 md:mb-16">
             <h1
-              className="text-7xl md:text-8xl font-black mb-12 leading-none tracking-tight cursor-pointer"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 md:mb-12 leading-none tracking-tight cursor-pointer"
               onClick={resetTypingAnimation}
             >
               {displayedText.split("").map((char, index) => (
@@ -252,27 +252,27 @@ export default function Portfolio() {
                 </span>
               ))}
               <span
-                className={`inline-block w-1 h-20 md:h-24 bg-white ml-2 ${showCursor ? "cursor-blink" : ""}`}
+                className={`inline-block w-1 h-12 sm:h-16 md:h-20 lg:h-24 bg-white ml-2 ${showCursor ? "cursor-blink" : ""}`}
               ></span>
             </h1>
-            <div className="border-t border-white pt-8">
-              <div className="text-2xl md:text-3xl font-bold uppercase tracking-wider text-white transition-colors duration-300 cursor-default">
+            <div className="border-t border-white pt-6 md:pt-8">
+              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold uppercase tracking-wider text-white transition-colors duration-300 cursor-default">
                 Computer Science & Engineering Student
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-lg font-medium">
-            <div className="flex items-center justify-center gap-3 border border-white p-4">
-              <Calendar className="w-5 h-5" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 text-base md:text-lg font-medium">
+            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4">
+              <Calendar className="w-4 h-4 md:w-5 md:h-5" />
               <HoverText>Born March 5, 2005</HoverText>
             </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-4">
-              <MapPin className="w-5 h-5" />
+            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4">
+              <MapPin className="w-4 h-4 md:w-5 md:h-5" />
               <HoverText>Lisbon, Portugal</HoverText>
             </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-4">
-              <Phone className="w-5 h-5" />
+            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4">
+              <Phone className="w-4 h-4 md:w-5 md:h-5" />
               <HoverText>(+351) 962888488</HoverText>
             </div>
           </div>
