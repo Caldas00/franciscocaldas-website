@@ -67,6 +67,13 @@ const Calendar = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Simple down arrow component
+const ChevronDown = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+  </svg>
+)
+
 export default function Portfolio() {
   const [isLoading, setIsLoading] = useState(true)
   const [displayedText, setDisplayedText] = useState("")
@@ -328,7 +335,7 @@ export default function Portfolio() {
       <ScrollToTop secondaryColor={secondaryColor} />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 md:px-8">
+      <section className="min-h-screen flex items-center justify-center px-4 md:px-8 relative">
         <div className="text-center max-w-5xl mx-auto">
           <div className="mb-8 md:mb-16">
             <h1
@@ -374,6 +381,12 @@ export default function Portfolio() {
               <HoverText>(+351) 962888488</HoverText>
             </div>
           </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+          <div className="text-sm font-mono text-white opacity-60 mb-2">scroll to explore</div>
+          <ChevronDown className="w-6 h-6 text-white opacity-60 animate-bounce-subtle" />
         </div>
       </section>
 
@@ -621,6 +634,19 @@ export default function Portfolio() {
           100% {
             opacity: 0;
           }
+        }
+
+        @keyframes bounce-subtle {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+
+        .animate-bounce-subtle {
+          animation: bounce-subtle 2s ease-in-out infinite;
         }
       `}</style>
     </div>
