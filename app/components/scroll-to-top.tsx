@@ -1,7 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ChevronUp } from "lucide-react"
+
+// Custom ChevronUp icon to avoid import issues
+const ChevronUp = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+  </svg>
+)
 
 interface ScrollToTopProps {
   secondaryColor: string
