@@ -367,17 +367,17 @@ export default function Portfolio() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 text-base md:text-lg font-medium">
-            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4">
-              <Calendar className="w-4 h-4 md:w-5 md:h-5" />
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-8 text-base md:text-lg font-medium">
+            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4 min-h-[60px]">
+              <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
               <HoverText>Born March 5, 2005</HoverText>
             </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4">
-              <MapPin className="w-4 h-4 md:w-5 md:h-5" />
+            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4 min-h-[60px]">
+              <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
               <HoverText>Lisbon, Portugal</HoverText>
             </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4">
-              <Phone className="w-4 h-4 md:w-5 md:h-5" />
+            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4 min-h-[60px]">
+              <Phone className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
               <HoverText>(+351) 962888488</HoverText>
             </div>
           </div>
@@ -400,9 +400,9 @@ export default function Portfolio() {
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-16">
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-16">
             {education.map((edu, index) => (
-              <div key={index} className="border border-white p-8">
+              <div key={index} className="border border-white p-4 md:p-8">
                 <div className="mb-6">
                   <div className="text-2xl font-black mb-3 uppercase tracking-wide" style={{ color: secondaryColor }}>
                     {edu.degree}
@@ -436,7 +436,7 @@ export default function Portfolio() {
           <div className="space-y-16">
             {experience.map((exp, index) => (
               <div key={index} className="border border-white p-8">
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-8">
                   <div className="md:col-span-1">
                     <div className="text-2xl font-black mb-3 uppercase tracking-wide" style={{ color: secondaryColor }}>
                       {exp.title}
@@ -467,15 +467,18 @@ export default function Portfolio() {
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 md:gap-4">
             {skills.map((skill, index) => (
-              <div key={index} className="border border-white p-4 text-center">
+              <div
+                key={index}
+                className="border border-white p-2 md:p-4 text-center min-h-[50px] flex items-center justify-center"
+              >
                 <HoverText className="font-bold text-lg uppercase tracking-wide">{skill}</HoverText>
               </div>
             ))}
           </div>
 
-          <div className="mt-16 grid md:grid-cols-2 gap-8">
+          <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-8 mt-16">
             <div className="border border-white p-8 text-center">
               <HoverText className="text-2xl font-black mb-4 uppercase tracking-wide">Portuguese</HoverText>
               <HoverText className="text-lg font-medium opacity-80">Native</HoverText>
@@ -498,9 +501,9 @@ export default function Portfolio() {
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8">
             {projects.map((project, index) => (
-              <div key={index} className="border border-white p-8">
+              <div key={index} className="border border-white p-4 md:p-8">
                 <div className="mb-6">
                   <HoverText className="text-2xl font-black mb-4 uppercase tracking-wide">{project.title}</HoverText>
                   <div className="grid grid-cols-2 gap-2 mb-6">
@@ -528,7 +531,7 @@ export default function Portfolio() {
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-16">
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-16">
             <div>
               <HoverText className="text-3xl font-black mb-12 uppercase tracking-wide">Get In Touch</HoverText>
               <div className="space-y-8">
