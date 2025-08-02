@@ -83,6 +83,7 @@ export default function Portfolio() {
   const [showHelp, setShowHelp] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const [showCursor, setShowCursor] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const colors = ["#7399C6", "#FFB366", "#98D8A8"] // blue, pastel orange, pastel green
   const fullName = "Francisco Caldas."
@@ -93,6 +94,16 @@ export default function Portfolio() {
   const skillsRef = useRef<HTMLElement>(null)
   const projectsRef = useRef<HTMLElement>(null)
   const contactRef = useRef<HTMLElement>(null)
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const cycleColor = () => {
     const nextIndex = (colorIndex + 1) % colors.length
@@ -271,18 +282,22 @@ export default function Portfolio() {
     <div
       className={`${className} text-white transition-colors duration-300 cursor-default`}
       onMouseEnter={(e) => {
-        const allTextElements = e.currentTarget.querySelectorAll("*")
-        e.currentTarget.style.color = secondaryColor
-        allTextElements.forEach((el: any) => {
-          el.style.color = secondaryColor
-        })
+        if (!isMobile) {
+          const allTextElements = e.currentTarget.querySelectorAll("*")
+          e.currentTarget.style.color = secondaryColor
+          allTextElements.forEach((el: any) => {
+            el.style.color = secondaryColor
+          })
+        }
       }}
       onMouseLeave={(e) => {
-        const allTextElements = e.currentTarget.querySelectorAll("*")
-        e.currentTarget.style.color = "white"
-        allTextElements.forEach((el: any) => {
-          el.style.color = "white"
-        })
+        if (!isMobile) {
+          const allTextElements = e.currentTarget.querySelectorAll("*")
+          e.currentTarget.style.color = "white"
+          allTextElements.forEach((el: any) => {
+            el.style.color = "white"
+          })
+        }
       }}
       {...props}
     >
@@ -306,19 +321,25 @@ export default function Portfolio() {
           rel="noopener noreferrer"
           className={`text-white hover:transition-colors duration-300 ${className}`}
           onMouseEnter={(e) => {
-            e.currentTarget.style.color = secondaryColor
-            setIsHovering(true)
+            if (!isMobile) {
+              e.currentTarget.style.color = secondaryColor
+              setIsHovering(true)
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.color = "white"
-            setIsHovering(false)
+            if (!isMobile) {
+              e.currentTarget.style.color = "white"
+              setIsHovering(false)
+            }
           }}
         >
           {children}
         </a>
-        <div className="absolute -bottom-6 left-0 text-xs font-mono text-white opacity-60 transition-all duration-300 whitespace-nowrap">
-          {isHovering ? "this is a link" : ""}
-        </div>
+        {!isMobile && (
+          <div className="absolute -bottom-6 left-0 text-xs font-mono text-white opacity-60 transition-all duration-300 whitespace-nowrap">
+            {isHovering ? "this is a link" : ""}
+          </div>
+        )}
       </div>
     )
   }
@@ -329,17 +350,17 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
-      <CursorTrail />
+      {!isMobile && <CursorTrail />}
       <Stickman secondaryColor={secondaryColor} onColorCycle={cycleColor} />
-      <HelpOverlay isVisible={showHelp} />
+      {!isMobile && <HelpOverlay isVisible={showHelp} />}
       <ScrollToTop secondaryColor={secondaryColor} />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 md:px-8 relative">
-        <div className="text-center max-w-5xl mx-auto">
-          <div className="mb-8 md:mb-16">
+      <section className="min-h-screen flex items-center justify-center px-4 relative">
+        <div className="text-center w-full max-w-4xl mx-auto">
+          <div className="mb-8">
             <h1
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 md:mb-12 leading-none tracking-tight cursor-pointer"
+              className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 leading-none tracking-tight cursor-pointer"
               onClick={resetTypingAnimation}
             >
               {displayedText.split("").map((char, index) => (
@@ -357,65 +378,68 @@ export default function Portfolio() {
                 </span>
               ))}
               <span
-                className={`inline-block w-1 h-12 sm:h-16 md:h-20 lg:h-24 bg-white ml-2 ${showCursor ? "cursor-blink" : ""}`}
+                className={`inline-block w-1 h-8 sm:h-12 md:h-16 bg-white ml-2 ${showCursor ? "cursor-blink" : ""}`}
               ></span>
             </h1>
-            <div className="border-t border-white pt-6 md:pt-8">
-              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold uppercase tracking-wider text-white transition-colors duration-300 cursor-default">
+            <div className="border-t border-white pt-4">
+              <div className="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider text-white">
                 Computer Science & Engineering Student
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 md:grid md:grid-cols-3 md:gap-8 text-base md:text-lg font-medium">
-            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4 min-h-[60px]">
-              <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-              <HoverText>Born March 5, 2005</HoverText>
+          <div className="space-y-3">
+            <div className="flex items-center justify-center gap-3 border border-white p-3">
+              <Calendar className="w-4 h-4 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Born March 5, 2005</span>
             </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4 min-h-[60px]">
-              <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-              <HoverText>Lisbon, Portugal</HoverText>
+            <div className="flex items-center justify-center gap-3 border border-white p-3">
+              <MapPin className="w-4 h-4 flex-shrink-0" />
+              <span className="text-sm sm:text-base">Lisbon, Portugal</span>
             </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-3 md:p-4 min-h-[60px]">
-              <Phone className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-              <HoverText>(+351) 962888488</HoverText>
+            <div className="flex items-center justify-center gap-3 border border-white p-3">
+              <Phone className="w-4 h-4 flex-shrink-0" />
+              <span className="text-sm sm:text-base">(+351) 962888488</span>
             </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-          <div className="text-sm font-mono text-white opacity-60 mb-2">scroll to explore</div>
-          <ChevronDown className="w-6 h-6 text-white opacity-60 animate-bounce-subtle" />
-        </div>
+        {/* Scroll indicator - only on desktop */}
+        {!isMobile && (
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+            <div className="text-sm font-mono text-white opacity-60 mb-2">scroll to explore</div>
+            <ChevronDown className="w-6 h-6 text-white opacity-60 animate-bounce-subtle" />
+          </div>
+        )}
       </section>
 
       {/* Education Section */}
-      <section ref={educationRef} className="py-24 px-8 border-t border-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-6xl font-black uppercase tracking-wider mb-4" style={{ color: secondaryColor }}>
+      <section ref={educationRef} className="py-16 px-4 border-t border-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2
+              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+              style={{ color: secondaryColor }}
+            >
               Education
             </h2>
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-16">
+          <div className="space-y-8">
             {education.map((edu, index) => (
-              <div key={index} className="border border-white p-4 md:p-8">
-                <div className="mb-6">
-                  <div className="text-2xl font-black mb-3 uppercase tracking-wide" style={{ color: secondaryColor }}>
-                    {edu.degree}
-                  </div>
-                  <LinkWithMessage href={edu.link} className="text-xl font-bold mb-2 block">
-                    {edu.institution}
-                  </LinkWithMessage>
-                  <HoverText className="text-lg mb-2 opacity-80 mt-8">{edu.period}</HoverText>
-                  <HoverText className="text-lg mb-4 opacity-80">{edu.location}</HoverText>
-                  <div className="border-t border-white pt-4">
-                    <HoverText className="font-black text-lg">GPA: {edu.gpa}</HoverText>
-                    {edu.note && <HoverText className="font-medium mt-2 opacity-90">{edu.note}</HoverText>}
-                  </div>
+              <div key={index} className="border border-white p-4">
+                <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                  {edu.degree}
+                </div>
+                <LinkWithMessage href={edu.link} className="text-base sm:text-lg font-bold mb-2 block">
+                  {edu.institution}
+                </LinkWithMessage>
+                <div className="text-sm opacity-80 mb-1">{edu.period}</div>
+                <div className="text-sm opacity-80 mb-3">{edu.location}</div>
+                <div className="border-t border-white pt-3">
+                  <div className="font-black">GPA: {edu.gpa}</div>
+                  {edu.note && <div className="font-medium mt-1 opacity-90">{edu.note}</div>}
                 </div>
               </div>
             ))}
@@ -424,32 +448,31 @@ export default function Portfolio() {
       </section>
 
       {/* Experience Section */}
-      <section ref={experienceRef} className="py-24 px-8 border-t border-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-6xl font-black uppercase tracking-wider mb-4" style={{ color: secondaryColor }}>
+      <section ref={experienceRef} className="py-16 px-4 border-t border-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2
+              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+              style={{ color: secondaryColor }}
+            >
               Experience
             </h2>
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="space-y-16">
+          <div className="space-y-8">
             {experience.map((exp, index) => (
-              <div key={index} className="border border-white p-8">
-                <div className="flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-8">
-                  <div className="md:col-span-1">
-                    <div className="text-2xl font-black mb-3 uppercase tracking-wide" style={{ color: secondaryColor }}>
-                      {exp.title}
-                    </div>
-                    <LinkWithMessage href={exp.link} className="text-xl font-bold mb-2 block">
-                      {exp.company}
-                    </LinkWithMessage>
-                    <HoverText className="text-lg opacity-80 mb-1 mt-8">{exp.period}</HoverText>
-                    <HoverText className="text-lg opacity-80">{exp.location}</HoverText>
-                  </div>
-                  <div className="md:col-span-2 border-l-0 md:border-l border-white md:pl-8">
-                    <HoverText className="text-lg leading-relaxed font-medium">{exp.description}</HoverText>
-                  </div>
+              <div key={index} className="border border-white p-4">
+                <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                  {exp.title}
+                </div>
+                <LinkWithMessage href={exp.link} className="text-base sm:text-lg font-bold mb-2 block">
+                  {exp.company}
+                </LinkWithMessage>
+                <div className="text-sm opacity-80 mb-1">{exp.period}</div>
+                <div className="text-sm opacity-80 mb-3">{exp.location}</div>
+                <div className="border-t border-white pt-3">
+                  <div className="text-sm sm:text-base leading-relaxed">{exp.description}</div>
                 </div>
               </div>
             ))}
@@ -458,63 +481,64 @@ export default function Portfolio() {
       </section>
 
       {/* Technical Skills Section */}
-      <section ref={skillsRef} className="py-24 px-8 border-t border-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-6xl font-black uppercase tracking-wider mb-4" style={{ color: secondaryColor }}>
+      <section ref={skillsRef} className="py-16 px-4 border-t border-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2
+              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+              style={{ color: secondaryColor }}
+            >
               Technical Skills
             </h2>
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-8">
             {skills.map((skill, index) => (
-              <div
-                key={index}
-                className="border border-white p-2 md:p-4 text-center min-h-[50px] flex items-center justify-center"
-              >
-                <HoverText className="font-bold text-lg uppercase tracking-wide">{skill}</HoverText>
+              <div key={index} className="border border-white p-3 text-center">
+                <div className="font-bold text-xs sm:text-sm uppercase">{skill}</div>
               </div>
             ))}
           </div>
 
-          <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-8 mt-16">
-            <div className="border border-white p-8 text-center">
-              <HoverText className="text-2xl font-black mb-4 uppercase tracking-wide">Portuguese</HoverText>
-              <HoverText className="text-lg font-medium opacity-80">Native</HoverText>
+          <div className="space-y-4">
+            <div className="border border-white p-4 text-center">
+              <div className="text-lg font-black mb-2 uppercase">Portuguese</div>
+              <div className="text-sm opacity-80">Native</div>
             </div>
-            <div className="border border-white p-8 text-center">
-              <HoverText className="text-2xl font-black mb-4 uppercase tracking-wide">English</HoverText>
-              <HoverText className="text-lg font-medium opacity-80">Level C1</HoverText>
+            <div className="border border-white p-4 text-center">
+              <div className="text-lg font-black mb-2 uppercase">English</div>
+              <div className="text-sm opacity-80">Level C1</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Projects Section */}
-      <section ref={projectsRef} className="py-24 px-8 border-t border-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-6xl font-black uppercase tracking-wider mb-4" style={{ color: secondaryColor }}>
+      <section ref={projectsRef} className="py-16 px-4 border-t border-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2
+              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+              style={{ color: secondaryColor }}
+            >
               Projects
             </h2>
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="flex flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+          <div className="space-y-8">
             {projects.map((project, index) => (
-              <div key={index} className="border border-white p-4 md:p-8">
-                <div className="mb-6">
-                  <HoverText className="text-2xl font-black mb-4 uppercase tracking-wide">{project.title}</HoverText>
-                  <div className="grid grid-cols-2 gap-2 mb-6">
-                    {project.stack.map((tech, techIndex) => (
-                      <div key={techIndex} className="border border-white p-2 text-center">
-                        <HoverText className="text-sm font-bold uppercase tracking-wide">{tech}</HoverText>
-                      </div>
-                    ))}
-                  </div>
+              <div key={index} className="border border-white p-4">
+                <div className="text-lg sm:text-xl font-black mb-3 uppercase">{project.title}</div>
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  {project.stack.map((tech, techIndex) => (
+                    <div key={techIndex} className="border border-white p-2 text-center">
+                      <div className="text-xs font-bold uppercase">{tech}</div>
+                    </div>
+                  ))}
                 </div>
-                <HoverText className="text-lg leading-relaxed font-medium">{project.description}</HoverText>
+                <div className="text-sm sm:text-base leading-relaxed">{project.description}</div>
               </div>
             ))}
           </div>
@@ -522,89 +546,92 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section ref={contactRef} className="py-24 px-8 border-t border-white">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-6xl font-black uppercase tracking-wider mb-4" style={{ color: secondaryColor }}>
+      <section ref={contactRef} className="py-16 px-4 border-t border-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2
+              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+              style={{ color: secondaryColor }}
+            >
               Contact
             </h2>
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-16">
+          <div className="space-y-8">
             <div>
-              <HoverText className="text-3xl font-black mb-12 uppercase tracking-wide">Get In Touch</HoverText>
-              <div className="space-y-8">
-                <div className="flex items-center gap-6 border border-white p-6">
-                  <Mail className="w-6 h-6" />
-                  <LinkWithMessage href="mailto:franciscopirescaldas@gmail.com" className="text-lg font-medium">
+              <div className="text-2xl font-black mb-8 uppercase">Get In Touch</div>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 border border-white p-4">
+                  <Mail className="w-5 h-5 flex-shrink-0" />
+                  <LinkWithMessage href="mailto:franciscopirescaldas@gmail.com" className="text-sm break-all">
                     franciscopirescaldas@gmail.com
                   </LinkWithMessage>
                 </div>
-                <div className="flex items-center gap-6 border border-white p-6">
-                  <Phone className="w-6 h-6" />
-                  <HoverText className="text-lg font-medium">(+351) 962888488</HoverText>
+                <div className="flex items-center gap-4 border border-white p-4">
+                  <Phone className="w-5 h-5 flex-shrink-0" />
+                  <span className="text-sm">(+351) 962888488</span>
                 </div>
-                <div className="flex items-center gap-6 border border-white p-6">
-                  <MapPin className="w-6 h-6" />
-                  <HoverText className="text-lg font-medium">Lisbon, Portugal</HoverText>
+                <div className="flex items-center gap-4 border border-white p-4">
+                  <MapPin className="w-5 h-5 flex-shrink-0" />
+                  <span className="text-sm">Lisbon, Portugal</span>
                 </div>
               </div>
 
-              <div className="flex gap-4 mt-12">
+              <div className="flex gap-4 mt-8">
                 <LinkWithMessage
                   href="https://linkedin.com/in/francisco-pires-caldas/"
-                  className="border border-white p-4 hover:bg-white hover:text-black transition-colors block"
+                  className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
                 >
-                  <Linkedin className="w-8 h-8" />
+                  <Linkedin className="w-6 h-6" />
                 </LinkWithMessage>
                 <LinkWithMessage
                   href="https://github.com"
-                  className="border border-white p-4 hover:bg-white hover:text-black transition-colors block"
+                  className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
                 >
-                  <Github className="w-8 h-8" />
+                  <Github className="w-6 h-6" />
                 </LinkWithMessage>
               </div>
             </div>
 
             <div>
-              <form className="space-y-8">
+              <form className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-lg font-bold mb-4 uppercase tracking-wide text-white">
+                  <label htmlFor="name" className="block text-sm font-bold mb-2 uppercase">
                     Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    className="w-full border border-white bg-black text-white p-4 focus:outline-none focus:bg-white focus:text-black transition-colors font-medium"
+                    className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
                     placeholder="Your name"
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-lg font-bold mb-4 uppercase tracking-wide text-white">
+                  <label htmlFor="email" className="block text-sm font-bold mb-2 uppercase">
                     Email
                   </label>
                   <input
                     type="email"
                     id="email"
-                    className="w-full border border-white bg-black text-white p-4 focus:outline-none focus:bg-white focus:text-black transition-colors font-medium"
+                    className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
                     placeholder="your.email@example.com"
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-lg font-bold mb-4 uppercase tracking-wide text-white">
+                  <label htmlFor="message" className="block text-sm font-bold mb-2 uppercase">
                     Message
                   </label>
                   <textarea
                     id="message"
-                    rows={6}
-                    className="w-full border border-white bg-black text-white p-4 focus:outline-none focus:bg-white focus:text-black transition-colors resize-none font-medium"
+                    rows={4}
+                    className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors resize-none"
                     placeholder="Your message..."
                   ></textarea>
                 </div>
                 <button
                   type="submit"
-                  className="w-full border border-white bg-black text-white p-4 font-black text-lg uppercase tracking-wide hover:bg-white hover:text-black transition-colors"
+                  className="w-full border border-white bg-black text-white p-3 font-black uppercase hover:bg-white hover:text-black transition-colors"
                 >
                   Send Message
                 </button>
@@ -615,14 +642,10 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-8 border-t border-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <HoverText className="text-lg font-medium opacity-80 mb-2">
-            &copy; 2025 Francisco Caldas. All rights reserved.
-          </HoverText>
-          <HoverText className="text-lg font-medium opacity-60">
-            Daily reader • Tennis enthusiast • Future Software Engineer
-          </HoverText>
+      <footer className="py-8 px-4 border-t border-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
+          <div className="text-sm opacity-60">Daily reader • Tennis enthusiast • Future Software Engineer</div>
         </div>
       </footer>
 

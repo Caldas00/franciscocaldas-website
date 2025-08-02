@@ -77,7 +77,15 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
+
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
@@ -85,6 +93,8 @@
     color: #ffffff;
     background-color: #000000;
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
 }
 
@@ -154,28 +164,12 @@ h6 {
   letter-spacing: 0.05em;
 }
 
-/* Grid alignment */
-.grid {
-  align-items: stretch;
-}
-
 /* Brutalist form styling */
 input,
 textarea {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-}
-
-/* Hover effects */
-a:hover,
-button:hover {
-  transition: all 0.2s ease;
-}
-
-/* Text hover effects */
-.hover-secondary:hover {
-  transition: color 0.3s ease;
 }
 
 /* Section reveal animations */
@@ -188,32 +182,6 @@ button:hover {
 .section-visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Loading screen glitch effect */
-@keyframes glitch {
-  0% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(-2px, -2px);
-  }
-  60% {
-    transform: translate(2px, 2px);
-  }
-  80% {
-    transform: translate(2px, -2px);
-  }
-  100% {
-    transform: translate(0);
-  }
-}
-
-.glitch {
-  animation: glitch 0.3s infinite;
 }
 
 /* Cursor blinking animation */
@@ -232,16 +200,57 @@ button:hover {
   animation: blink 0.3s infinite;
 }
 
-/* Responsive typography */
-@media (max-width: 768px) {
-  .text-8xl {
-    font-size: 4rem;
+/* Mobile optimizations */
+@media screen and (max-width: 768px) {
+  /* Prevent text scaling */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
-  .text-9xl {
-    font-size: 5rem;
+
+  /* Ensure proper viewport */
+  body {
+    overflow-x: hidden;
+    width: 100vw;
+    max-width: 100%;
   }
-  .text-6xl {
-    font-size: 3rem;
+
+  /* Fix container widths */
+  .max-w-4xl,
+  .max-w-5xl,
+  .max-w-6xl {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Simplify grid layouts */
+  .grid {
+    display: grid;
+  }
+
+  /* Ensure proper spacing */
+  .space-y-8 > * + * {
+    margin-top: 2rem;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+
+  .space-y-3 > * + * {
+    margin-top: 0.75rem;
+  }
+
+  /* Fix text wrapping */
+  .break-all {
+    word-break: break-all;
+  }
+
+  /* Ensure buttons are touchable */
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 
@@ -258,134 +267,4 @@ header,
 footer,
 main {
   border-radius: 0 !important;
-}
-
-/* Mobile fixes for Android */
-@media screen and (max-width: 768px) {
-  /* Fix viewport issues */
-  html {
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-  }
-
-  /* Prevent horizontal overflow */
-  body {
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  /* Fix grid layouts on mobile */
-  .grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .grid.md\\:grid-cols-2 {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .grid.md\\:grid-cols-3 {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .grid.grid-cols-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-  }
-
-  /* Fix flexbox issues */
-  .flex {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  /* Ensure proper box sizing */
-  * {
-    box-sizing: border-box;
-  }
-
-  /* Fix container widths */
-  .max-w-5xl,
-  .max-w-6xl {
-    max-width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  /* Fix text scaling */
-  .text-4xl {
-    font-size: 2.5rem;
-  }
-
-  .text-6xl {
-    font-size: 3rem;
-  }
-
-  .text-8xl {
-    font-size: 4rem;
-  }
-
-  /* Fix padding and margins */
-  .p-8 {
-    padding: 1rem;
-  }
-
-  .py-24 {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-
-  .px-8 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  /* Fix border issues */
-  .border {
-    border-width: 1px;
-    border-style: solid;
-  }
-
-  /* Fix input and form elements */
-  input,
-  textarea,
-  button {
-    width: 100%;
-    min-width: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-}
-
-/* Android-specific fixes */
-@media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 1) {
-  /* Fix Android Chrome issues */
-  .min-h-screen {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-  }
-
-  /* Fix Android flexbox bugs */
-  .flex {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-  }
-
-  .items-center {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-  }
-
-  .justify-center {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-  }
 }
