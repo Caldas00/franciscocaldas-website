@@ -278,6 +278,34 @@ export default function Portfolio() {
     },
   ]
 
+  // Component for links with hover message
+  const LinkWithMessage = ({
+    href,
+    children,
+    className = "",
+  }: { href: string; children: React.ReactNode; className?: string }) => {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`text-white hover:transition-colors duration-300 ${className}`}
+        onMouseEnter={(e) => {
+          if (!isMobile) {
+            e.currentTarget.style.color = secondaryColor
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!isMobile) {
+            e.currentTarget.style.color = "white"
+          }
+        }}
+      >
+        {children}
+      </a>
+    )
+  }
+
   const HoverText = ({ children, className = "", ...props }: any) => (
     <div
       className={`${className} text-white transition-colors duration-300 cursor-default`}
@@ -306,7 +334,7 @@ export default function Portfolio() {
   )
 
   // Component for links with hover message
-  const LinkWithMessage = ({
+  /*const LinkWithMessage = ({
     href,
     children,
     className = "",
@@ -342,7 +370,7 @@ export default function Portfolio() {
         )}
       </div>
     )
-  }
+  }*/
 
   if (isLoading) {
     return <LoadingScreen />
