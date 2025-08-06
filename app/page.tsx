@@ -543,6 +543,7 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
+      {/*
       <section ref={projectsRef} className="py-16 px-4 border-t border-white">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
@@ -571,7 +572,7 @@ export default function Portfolio() {
             ))}
           </div>
         </div>
-      </section>
+      </section>*/}
 
       {/* Contact Section */}
       <section ref={contactRef} className="py-16 px-4 border-t border-white">
