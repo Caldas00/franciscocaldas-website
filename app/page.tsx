@@ -242,42 +242,6 @@ export default function Portfolio() {
     },
   ]
 
-  const skills = [
-    "C++",
-    "Python",
-    "Java",
-    "R",
-    "SQL",
-    ".NET",
-    "Generative AI",
-    "React",
-    "JavaScript",
-    "HTML",
-    "Agile",
-    "Financial Systems",
-  ]
-
-  const projects = [
-    {
-      title: "Financial Management AI Bot",
-      stack: ["Python", ".NET", "Generative AI", "JavaScript"],
-      description:
-        "Automated financial management system using AI to streamline data handling and reduce manual workload for enterprise clients.",
-    },
-    {
-      title: "Rocket Onboard Systems",
-      stack: ["C++", "Python", "Hardware Integration"],
-      description:
-        "Development of onboard systems for student rocketry project, focusing on real-time data collection and system monitoring.",
-    },
-    {
-      title: "Sports Content Monitoring System",
-      stack: ["Python", "Real-time Processing", "SQL"],
-      description:
-        "Real-time monitoring system for detecting unauthorized sports broadcast streams with automated reporting capabilities.",
-    },
-  ]
-
   // Component for links with hover message
   const LinkWithMessage = ({
     href,
@@ -521,22 +485,19 @@ export default function Portfolio() {
             <div className="w-full h-px bg-white"></div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-8">
-            {skills.map((skill, index) => (
-              <div key={index} className="border border-white p-3 text-center">
-                <div className="font-bold text-xs sm:text-sm uppercase">{skill}</div>
+          <div className="space-y-8">
+            <div className="border border-white p-4">
+              <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
+                Programming
               </div>
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            <div className="border border-white p-4 text-center">
-              <div className="text-lg font-black mb-2 uppercase">Portuguese</div>
-              <div className="text-sm opacity-80">Native</div>
+              <div className="text-sm sm:text-base">C++ | Python | Java | SQL | Generative AI | APIs</div>
             </div>
-            <div className="border border-white p-4 text-center">
-              <div className="text-lg font-black mb-2 uppercase">English</div>
-              <div className="text-sm opacity-80">Level C1</div>
+
+            <div className="border border-white p-4">
+              <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
+                Languages
+              </div>
+              <div className="text-sm sm:text-base">Portuguese (Native) | English (Level C1)</div>
             </div>
           </div>
         </div>
