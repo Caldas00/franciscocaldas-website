@@ -75,7 +75,7 @@ const ChevronDown = ({ className }: { className?: string }) => (
 )
 
 export default function Portfolio() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [displayedText, setDisplayedText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [secondaryColor, setSecondaryColor] = useState("#7399C6")
@@ -163,12 +163,24 @@ export default function Portfolio() {
     return () => observer.disconnect()
   }, [isLoading])
 
+  // Check if loading screen has been shown in this session
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
+    const hasLoadedBefore = sessionStorage.getItem("hasLoadedPortfolio")
+
+    if (!hasLoadedBefore) {
+      setIsLoading(true)
+      sessionStorage.setItem("hasLoadedPortfolio", "true")
+
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+        setIsTyping(true)
+      }, 4000)
+
+      return () => clearTimeout(timer)
+    } else {
+      // Skip loading screen, go straight to typing
       setIsTyping(true)
-    }, 4000)
-    return () => clearTimeout(timer)
+    }
   }, [])
 
   useEffect(() => {
@@ -207,7 +219,7 @@ export default function Portfolio() {
     {
       title: "Software Engineer Intern",
       company: "Innowave",
-      period: "July 2025 – Present",
+      period: "July 2025 – September 2025",
       location: "Lisbon, Portugal",
       description:
         "Working in a fast-paced Agile team to develop an automated financial management AI bot for internal use and client deployment. Building core features using Generative AI, .NET, Python, Java, HTML and JavaScript.",
@@ -270,72 +282,6 @@ export default function Portfolio() {
     )
   }
 
-  const HoverText = ({ children, className = "", ...props }: any) => (
-    <div
-      className={`${className} text-white transition-colors duration-300 cursor-default`}
-      onMouseEnter={(e) => {
-        if (!isMobile) {
-          const allTextElements = e.currentTarget.querySelectorAll("*")
-          e.currentTarget.style.color = secondaryColor
-          allTextElements.forEach((el: any) => {
-            el.style.color = secondaryColor
-          })
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (!isMobile) {
-          const allTextElements = e.currentTarget.querySelectorAll("*")
-          e.currentTarget.style.color = "white"
-          allTextElements.forEach((el: any) => {
-            el.style.color = "white"
-          })
-        }
-      }}
-      {...props}
-    >
-      {children}
-    </div>
-  )
-
-  // Component for links with hover message
-  /*const LinkWithMessage = ({
-    href,
-    children,
-    className = "",
-  }: { href: string; children: React.ReactNode; className?: string }) => {
-    const [isHovering, setIsHovering] = useState(false)
-
-    return (
-      <div className="relative">
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`text-white hover:transition-colors duration-300 ${className}`}
-          onMouseEnter={(e) => {
-            if (!isMobile) {
-              e.currentTarget.style.color = secondaryColor
-              setIsHovering(true)
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isMobile) {
-              e.currentTarget.style.color = "white"
-              setIsHovering(false)
-            }
-          }}
-        >
-          {children}
-        </a>
-        {!isMobile && (
-          <div className="absolute -bottom-6 left-0 text-xs font-mono text-white opacity-60 transition-all duration-300 whitespace-nowrap">
-            {isHovering ? "this is a link" : ""}
-          </div>
-        )}
-      </div>
-    )
-  }*/
-
   if (isLoading) {
     return <LoadingScreen />
   }
@@ -347,297 +293,273 @@ export default function Portfolio() {
       {!isMobile && <HelpOverlay isVisible={showHelp} />}
       <ScrollToTop secondaryColor={secondaryColor} />
 
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 relative">
-        <div className="text-center w-full max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1
-              className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 leading-none tracking-tight cursor-pointer"
-              onClick={resetTypingAnimation}
-            >
-              {displayedText.split("").map((char, index) => (
-                <span key={index} className="relative inline-block">
-                  <span
-                    className={`${char === " " ? "" : "absolute inset-0 opacity-100 transition-opacity duration-300"}`}
-                    style={{
-                      backgroundColor: secondaryColor,
-                      animation: `highlight 0.3s ease-in-out ${index * 0.1}s forwards`,
-                    }}
-                  ></span>
-                  <span className="relative z-10" style={{ color: secondaryColor }}>
-                    {char}
+      {/* Add top padding to account for fixed header */}
+      <div className="pt-16">
+        {/* Hero Section */}
+        <section className="min-h-screen flex items-center justify-center px-4 relative">
+          <div className="text-center w-full max-w-4xl mx-auto">
+            <div className="mb-8">
+              <h1
+                className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 leading-none tracking-tight cursor-pointer"
+                onClick={resetTypingAnimation}
+              >
+                {displayedText.split("").map((char, index) => (
+                  <span key={index} className="relative inline-block">
+                    <span
+                      className={`${char === " " ? "" : "absolute inset-0 opacity-100 transition-opacity duration-300"}`}
+                      style={{
+                        backgroundColor: secondaryColor,
+                        animation: `highlight 0.3s ease-in-out ${index * 0.1}s forwards`,
+                      }}
+                    ></span>
+                    <span className="relative z-10" style={{ color: secondaryColor }}>
+                      {char}
+                    </span>
                   </span>
-                </span>
+                ))}
+                <span
+                  className={`inline-block w-1 h-8 sm:h-12 md:h-16 bg-white ml-2 ${showCursor ? "cursor-blink" : ""}`}
+                ></span>
+              </h1>
+              <div className="border-t border-white pt-4">
+                <div className="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider text-white">
+                  Computer Science & Engineering Student
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-center gap-3 border border-white p-3">
+                <Calendar className="w-4 h-4 flex-shrink-0" />
+                <span className="text-sm sm:text-base">Born March 5, 2005</span>
+              </div>
+              <div className="flex items-center justify-center gap-3 border border-white p-3">
+                <MapPin className="w-4 h-4 flex-shrink-0" />
+                <span className="text-sm sm:text-base">Lisbon, Portugal</span>
+              </div>
+              <div className="flex items-center justify-center gap-3 border border-white p-3">
+                <Phone className="w-4 h-4 flex-shrink-0" />
+                <span className="text-sm sm:text-base">(+351) 962888488</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll indicator - only on desktop */}
+          {!isMobile && (
+            <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+              <div
+                className="text-base font-mono mb-3 uppercase tracking-wider font-bold"
+                style={{ color: secondaryColor }}
+              >
+                Scroll to Explore
+              </div>
+              <ChevronDown className="w-8 h-8 animate-bounce-subtle" style={{ color: secondaryColor }} />
+            </div>
+          )}
+        </section>
+
+        {/* Education Section */}
+        <section ref={educationRef} className="py-16 px-4 border-t border-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2
+                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+                style={{ color: secondaryColor }}
+              >
+                Education
+              </h2>
+              <div className="w-full h-px bg-white"></div>
+            </div>
+
+            <div className="space-y-8">
+              {education.map((edu, index) => (
+                <div key={index} className="border border-white p-4">
+                  <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                    {edu.degree}
+                  </div>
+                  <LinkWithMessage href={edu.link} className="text-base sm:text-lg font-bold mb-2 block">
+                    {edu.institution}
+                  </LinkWithMessage>
+                  <div className="text-sm opacity-80 mb-1">{edu.period}</div>
+                  <div className="text-sm opacity-80 mb-3">{edu.location}</div>
+                  <div className="border-t border-white pt-3">
+                    <div className="font-black">GPA: {edu.gpa}</div>
+                    {edu.note && <div className="font-medium mt-1 opacity-90">{edu.note}</div>}
+                  </div>
+                </div>
               ))}
-              <span
-                className={`inline-block w-1 h-8 sm:h-12 md:h-16 bg-white ml-2 ${showCursor ? "cursor-blink" : ""}`}
-              ></span>
-            </h1>
-            <div className="border-t border-white pt-4">
-              <div className="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider text-white">
-                Computer Science & Engineering Student
-              </div>
             </div>
           </div>
+        </section>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-center gap-3 border border-white p-3">
-              <Calendar className="w-4 h-4 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Born March 5, 2005</span>
+        {/* Experience Section */}
+        <section ref={experienceRef} className="py-16 px-4 border-t border-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2
+                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+                style={{ color: secondaryColor }}
+              >
+                Experience
+              </h2>
+              <div className="w-full h-px bg-white"></div>
             </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-3">
-              <MapPin className="w-4 h-4 flex-shrink-0" />
-              <span className="text-sm sm:text-base">Lisbon, Portugal</span>
-            </div>
-            <div className="flex items-center justify-center gap-3 border border-white p-3">
-              <Phone className="w-4 h-4 flex-shrink-0" />
-              <span className="text-sm sm:text-base">(+351) 962888488</span>
-            </div>
-          </div>
-        </div>
 
-        {/* Scroll indicator - only on desktop */}
-        {!isMobile && (
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-            <div className="text-sm font-mono text-white opacity-60 mb-2">scroll to explore</div>
-            <ChevronDown className="w-6 h-6 text-white opacity-60 animate-bounce-subtle" />
-          </div>
-        )}
-      </section>
-
-      {/* Education Section */}
-      <section ref={educationRef} className="py-16 px-4 border-t border-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h2
-              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-              style={{ color: secondaryColor }}
-            >
-              Education
-            </h2>
-            <div className="w-full h-px bg-white"></div>
-          </div>
-
-          <div className="space-y-8">
-            {education.map((edu, index) => (
-              <div key={index} className="border border-white p-4">
-                <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
-                  {edu.degree}
+            <div className="space-y-8">
+              {experience.map((exp, index) => (
+                <div key={index} className="border border-white p-4">
+                  <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                    {exp.title}
+                  </div>
+                  <LinkWithMessage href={exp.link} className="text-base sm:text-lg font-bold mb-2 block">
+                    {exp.company}
+                  </LinkWithMessage>
+                  <div className="text-sm opacity-80 mb-1">{exp.period}</div>
+                  <div className="text-sm opacity-80 mb-3">{exp.location}</div>
+                  <div className="border-t border-white pt-3">
+                    <div className="text-sm sm:text-base leading-relaxed">{exp.description}</div>
+                  </div>
                 </div>
-                <LinkWithMessage href={edu.link} className="text-base sm:text-lg font-bold mb-2 block">
-                  {edu.institution}
-                </LinkWithMessage>
-                <div className="text-sm opacity-80 mb-1">{edu.period}</div>
-                <div className="text-sm opacity-80 mb-3">{edu.location}</div>
-                <div className="border-t border-white pt-3">
-                  <div className="font-black">GPA: {edu.gpa}</div>
-                  {edu.note && <div className="font-medium mt-1 opacity-90">{edu.note}</div>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section ref={experienceRef} className="py-16 px-4 border-t border-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h2
-              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-              style={{ color: secondaryColor }}
-            >
-              Experience
-            </h2>
-            <div className="w-full h-px bg-white"></div>
-          </div>
-
-          <div className="space-y-8">
-            {experience.map((exp, index) => (
-              <div key={index} className="border border-white p-4">
-                <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
-                  {exp.title}
-                </div>
-                <LinkWithMessage href={exp.link} className="text-base sm:text-lg font-bold mb-2 block">
-                  {exp.company}
-                </LinkWithMessage>
-                <div className="text-sm opacity-80 mb-1">{exp.period}</div>
-                <div className="text-sm opacity-80 mb-3">{exp.location}</div>
-                <div className="border-t border-white pt-3">
-                  <div className="text-sm sm:text-base leading-relaxed">{exp.description}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Technical Skills Section */}
-      <section ref={skillsRef} className="py-16 px-4 border-t border-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h2
-              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-              style={{ color: secondaryColor }}
-            >
-              Technical Skills
-            </h2>
-            <div className="w-full h-px bg-white"></div>
-          </div>
-
-          <div className="space-y-8">
-            <div className="border border-white p-4">
-              <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
-                Programming
-              </div>
-              <div className="text-sm sm:text-base">C++ | Python | Java | SQL | Generative AI | APIs</div>
-            </div>
-
-            <div className="border border-white p-4">
-              <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
-                Languages
-              </div>
-              <div className="text-sm sm:text-base">Portuguese (Native) | English (Level C1)</div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Projects Section */}
-      {/*
-      <section ref={projectsRef} className="py-16 px-4 border-t border-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h2
-              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-              style={{ color: secondaryColor }}
-            >
-              Projects
-            </h2>
-            <div className="w-full h-px bg-white"></div>
-          </div>
+        {/* Technical Skills Section */}
+        <section ref={skillsRef} className="py-16 px-4 border-t border-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2
+                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+                style={{ color: secondaryColor }}
+              >
+                Technical Skills
+              </h2>
+              <div className="w-full h-px bg-white"></div>
+            </div>
 
-          <div className="space-y-8">
-            {projects.map((project, index) => (
-              <div key={index} className="border border-white p-4">
-                <div className="text-lg sm:text-xl font-black mb-3 uppercase">{project.title}</div>
-                <div className="grid grid-cols-2 gap-2 mb-4">
-                  {project.stack.map((tech, techIndex) => (
-                    <div key={techIndex} className="border border-white p-2 text-center">
-                      <div className="text-xs font-bold uppercase">{tech}</div>
-                    </div>
-                  ))}
+            <div className="space-y-8">
+              <div className="border border-white p-4">
+                <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
+                  Programming
                 </div>
-                <div className="text-sm sm:text-base leading-relaxed">{project.description}</div>
+                <div className="text-sm sm:text-base">C++ | Python | Java | SQL | Generative AI | APIs</div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>*/}
 
-      {/* Contact Section */}
-      <section ref={contactRef} className="py-16 px-4 border-t border-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h2
-              className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-              style={{ color: secondaryColor }}
-            >
-              Contact
-            </h2>
-            <div className="w-full h-px bg-white"></div>
+              <div className="border border-white p-4">
+                <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
+                  Languages
+                </div>
+                <div className="text-sm sm:text-base">Portuguese (Native) | English (Level C1)</div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="space-y-8">
-            <div>
-              <div className="text-2xl font-black mb-8 uppercase">Get In Touch</div>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 border border-white p-4">
-                  <Mail className="w-5 h-5 flex-shrink-0" />
-                  <LinkWithMessage href="mailto:franciscopirescaldas@gmail.com" className="text-sm break-all">
-                    franciscopirescaldas@gmail.com
+        {/* Contact Section */}
+        <section ref={contactRef} className="py-16 px-4 border-t border-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2
+                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
+                style={{ color: secondaryColor }}
+              >
+                Contact
+              </h2>
+              <div className="w-full h-px bg-white"></div>
+            </div>
+
+            <div className="space-y-8">
+              <div>
+                <div className="text-2xl font-black mb-8 uppercase">Get In Touch</div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 border border-white p-4">
+                    <Mail className="w-5 h-5 flex-shrink-0" />
+                    <LinkWithMessage href="mailto:franciscopirescaldas@gmail.com" className="text-sm break-all">
+                      franciscopirescaldas@gmail.com
+                    </LinkWithMessage>
+                  </div>
+                  <div className="flex items-center gap-4 border border-white p-4">
+                    <Phone className="w-5 h-5 flex-shrink-0" />
+                    <span className="text-sm">(+351) 962888488</span>
+                  </div>
+                  <div className="flex items-center gap-4 border border-white p-4">
+                    <MapPin className="w-5 h-5 flex-shrink-0" />
+                    <span className="text-sm">Lisbon, Portugal</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 mt-8">
+                  <LinkWithMessage
+                    href="https://linkedin.com/in/francisco-pires-caldas/"
+                    className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
+                  >
+                    <Linkedin className="w-6 h-6" />
+                  </LinkWithMessage>
+                  <LinkWithMessage
+                    href="https://github.com"
+                    className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
+                  >
+                    <Github className="w-6 h-6" />
                   </LinkWithMessage>
                 </div>
-                <div className="flex items-center gap-4 border border-white p-4">
-                  <Phone className="w-5 h-5 flex-shrink-0" />
-                  <span className="text-sm">(+351) 962888488</span>
-                </div>
-                <div className="flex items-center gap-4 border border-white p-4">
-                  <MapPin className="w-5 h-5 flex-shrink-0" />
-                  <span className="text-sm">Lisbon, Portugal</span>
-                </div>
               </div>
 
-              <div className="flex gap-4 mt-8">
-                <LinkWithMessage
-                  href="https://linkedin.com/in/francisco-pires-caldas/"
-                  className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
-                >
-                  <Linkedin className="w-6 h-6" />
-                </LinkWithMessage>
-                <LinkWithMessage
-                  href="https://github.com"
-                  className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
-                >
-                  <Github className="w-6 h-6" />
-                </LinkWithMessage>
+              <div>
+                <form className="space-y-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-bold mb-2 uppercase">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-bold mb-2 uppercase">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-bold mb-2 uppercase">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={4}
+                      className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors resize-none"
+                      placeholder="Your message..."
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full border border-white bg-black text-white p-3 font-black uppercase hover:bg-white hover:text-black transition-colors"
+                  >
+                    Send Message
+                  </button>
+                </form>
               </div>
-            </div>
-
-            <div>
-              <form className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-bold mb-2 uppercase">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-bold mb-2 uppercase">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-bold mb-2 uppercase">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={4}
-                    className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors resize-none"
-                    placeholder="Your message..."
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full border border-white bg-black text-white p-3 font-black uppercase hover:bg-white hover:text-black transition-colors"
-                >
-                  Send Message
-                </button>
-              </form>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="py-8 px-4 border-t border-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-          <div className="text-sm opacity-60">Daily reader • Tennis enthusiast • Future Software Engineer</div>
-        </div>
-      </footer>
+        {/* Footer */}
+        <footer className="py-8 px-4 border-t border-white">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
+            <div className="text-sm opacity-60">Daily reader • Tennis enthusiast • Future Software Engineer</div>
+          </div>
+        </footer>
+      </div>
 
       <style jsx>{`
         @keyframes highlight {
