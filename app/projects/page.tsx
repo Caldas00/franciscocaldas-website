@@ -52,6 +52,13 @@ export default function ProjectsPage() {
       link: "/projects/aiexec",
     },
     {
+      id: "llm-interface",
+      name: "Self-Hosted LLM Interface",
+      description:
+        "Minimal front-end interface connecting to a self-hosted Llama 3.1 8B model running on a custom Ubuntu server with RTX 3070 GPU.",
+      link: "/projects/llm-interface",
+    },
+    {
       id: "flappy-dqn",
       name: "Flappy Bird DQN",
       description:
