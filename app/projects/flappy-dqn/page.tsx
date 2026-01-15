@@ -103,8 +103,8 @@ export default function FlappyDQNPage() {
           </div>
 
           <div className="mb-8 border-2 p-1" style={{ borderColor: secondaryColor }}>
-            <video className="w-full aspect-video object-cover" autoPlay loop muted playsInline controls preload="auto">
-              <source src="/video/pedaco.mp4" type="video/mp4" />
+            <video className="max-w-[400px] w-full h-auto block" autoPlay loop muted playsInline controls preload="auto">
+              <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/pedaco-O2t1LkINYDTe59cgPwZLdgPMUsPESa.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

@@ -121,20 +121,25 @@ export default function ProjectsPage() {
                   }}
                 >
                   {project.featured && (
-                    <div className="mb-4 border-2 p-1" style={{ borderColor: secondaryColor }}>
-                      <video
-                        className="w-full aspect-video object-cover"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        preload="auto"
-                      >
-                        <source src="/video/pedaco.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                  )}
+                    <div className="mb-4 flex justify-center"> {/* Flex para centrar o vídeo */}
+    <div 
+      className="border-2 p-1 inline-block" // "inline-block" faz a borda colar ao vídeo
+      style={{ borderColor: secondaryColor }}
+    >
+      <video
+        className="max-w-[400px] w-full h-auto block" // Define o tamanho máximo aqui
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+      >
+        <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/pedaco-O2t1LkINYDTe59cgPwZLdgPMUsPESa.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+)}
                   <h2
                     className="text-2xl sm:text-3xl font-black mb-3 uppercase transition-colors"
                     style={{ color: secondaryColor }}
