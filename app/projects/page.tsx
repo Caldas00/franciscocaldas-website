@@ -12,8 +12,10 @@ export default function ProjectsPage() {
   const [colorIndex, setColorIndex] = useState(0)
   const [showHelp, setShowHelp] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isLightMode, setIsLightMode] = useState(true)
 
   const colors = ["#7399C6", "#FFB366", "#98D8A8"]
+  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B"]
 
   useEffect(() => {
     const checkMobile = () => {
@@ -27,7 +29,13 @@ export default function ProjectsPage() {
   const cycleColor = () => {
     const nextIndex = (colorIndex + 1) % colors.length
     setColorIndex(nextIndex)
-    setSecondaryColor(colors[nextIndex])
+    setSecondaryColor(isLightMode ? lightModeColors[nextIndex] : colors[nextIndex])
+  }
+
+  const toggleLightMode = () => {
+    const newMode = !isLightMode
+    setIsLightMode(newMode)
+    setSecondaryColor(newMode ? lightModeColors[colorIndex] : colors[colorIndex])
   }
 
   useEffect(() => {
@@ -41,9 +49,17 @@ export default function ProjectsPage() {
 
     window.addEventListener("keydown", handleKeyPress)
     return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [colorIndex, showHelp])
+  }, [colorIndex, showHelp, isLightMode])
 
   const projects = [
+    {
+      id: "flappy-dqn",
+      name: "Flappy Bird DQN",
+      description:
+        "Deep Q-Learning neural network that learns to play Flappy Bird through reinforcement learning with 25K parameters and epsilon-greedy exploration.",
+      link: "/projects/flappy-dqn",
+      featured: true,
+    },
     {
       id: "aiexec",
       name: "AI Executable Prompt",
@@ -51,30 +67,27 @@ export default function ProjectsPage() {
         "Execute .ai scripts directly from your terminal, turning natural-language instructions into real actions with local-first architecture.",
       link: "/projects/aiexec",
     },
-    {
-      id: "llm-interface",
-      name: "Self-Hosted LLM Interface",
-      description:
-        "Minimal front-end interface connecting to a self-hosted Llama 3.1 8B model running on a custom Ubuntu server with RTX 3070 GPU.",
-      link: "/projects/llm-interface",
-    },
-    {
-      id: "flappy-dqn",
-      name: "Flappy Bird DQN",
-      description:
-        "Deep Q-Learning neural network that learns to play Flappy Bird through reinforcement learning with ~25K parameters and epsilon-greedy exploration.",
-      link: "/projects/flappy-dqn",
-    },
   ]
 
+  const bgColor = isLightMode ? "#f5f5f5" : "#000000"
+  const textColor = isLightMode ? "#1a1a1a" : "#ffffff"
+  const borderColor = isLightMode ? "#1a1a1a" : "#ffffff"
+
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
-      {!isMobile && <CursorTrail />}
-      <Stickman secondaryColor={secondaryColor} onColorCycle={cycleColor} />
+    <div
+      className="min-h-screen relative overflow-x-hidden transition-colors duration-300"
+      style={{ backgroundColor: bgColor, color: textColor }}
+    >
+      {!isMobile && <CursorTrail isLightMode={isLightMode} />}
+      <Stickman
+        secondaryColor={secondaryColor}
+        onColorCycle={cycleColor}
+        isLightMode={isLightMode}
+        onToggleLightMode={toggleLightMode}
+      />
       {!isMobile && <HelpOverlay isVisible={showHelp} />}
       <ScrollToTop secondaryColor={secondaryColor} />
 
-      {/* Add top padding to account for fixed header */}
       <div className="pt-24 px-4 pb-16">
         <div className="max-w-4xl mx-auto">
           {/* Page Title */}
@@ -85,53 +98,68 @@ export default function ProjectsPage() {
             >
               Projects
             </h1>
-            <div className="w-full h-px bg-white"></div>
+            <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
           </div>
 
           {/* Projects Grid */}
           <div className="grid gap-8">
             {projects.map((project) => (
-              <Link
-                key={project.id}
-                href={project.link}
-                className="border border-white p-6 hover:border-opacity-100 transition-all group"
-                onMouseEnter={(e) => {
-                  if (!isMobile) {
-                    e.currentTarget.style.borderColor = secondaryColor
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isMobile) {
-                    e.currentTarget.style.borderColor = "white"
-                  }
-                }}
-              >
-                <h2
-                  className="text-2xl sm:text-3xl font-black mb-3 uppercase transition-colors"
-                  style={{
-                    color: secondaryColor,
+              <div key={project.id}>
+                <Link
+                  href={project.link}
+                  className="border p-6 block transition-all"
+                  style={{ borderColor: borderColor }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.borderColor = secondaryColor
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.borderColor = borderColor
+                    }
                   }}
                 >
-                  {project.name}
-                </h2>
-                <p className="text-sm sm:text-base leading-relaxed mb-4 opacity-90">{project.description}</p>
-                <div
-                  className="text-sm font-bold uppercase tracking-wide inline-block"
-                  style={{ color: secondaryColor }}
-                >
-                  Read more →
-                </div>
-              </Link>
+                  {project.featured && (
+                    <div className="mb-4 border-2 p-1" style={{ borderColor: secondaryColor }}>
+                      <video
+                        className="w-full aspect-video object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                      >
+                        <source src="/video/pedaco.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  )}
+                  <h2
+                    className="text-2xl sm:text-3xl font-black mb-3 uppercase transition-colors"
+                    style={{ color: secondaryColor }}
+                  >
+                    {project.name}
+                  </h2>
+                  <p className="text-sm sm:text-base leading-relaxed mb-4 opacity-90">{project.description}</p>
+                  <div
+                    className="text-sm font-bold uppercase tracking-wide inline-block"
+                    style={{ color: secondaryColor }}
+                  >
+                    Read more
+                  </div>
+                </Link>
+              </div>
             ))}
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-white">
+      <footer className="py-8 px-4 border-t" style={{ borderColor: borderColor }}>
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-          <div className="text-sm opacity-60">Daily reader • Tennis enthusiast • Future Software Engineer</div>
+          <div className="text-sm opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
         </div>
       </footer>
     </div>

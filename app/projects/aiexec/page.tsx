@@ -30,13 +30,15 @@ const ExternalLink = ({ className }: { className?: string }) => (
 )
 
 export default function AiexecPage() {
-  const [secondaryColor, setSecondaryColor] = useState("#7399C6")
+  const [secondaryColor, setSecondaryColor] = useState("#4A6FA5")
   const [colorIndex, setColorIndex] = useState(0)
   const [showHelp, setShowHelp] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [isLightMode, setIsLightMode] = useState(true)
 
   const colors = ["#7399C6", "#FFB366", "#98D8A8"]
+  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B"]
 
   useEffect(() => {
     const checkMobile = () => {
@@ -50,7 +52,13 @@ export default function AiexecPage() {
   const cycleColor = () => {
     const nextIndex = (colorIndex + 1) % colors.length
     setColorIndex(nextIndex)
-    setSecondaryColor(colors[nextIndex])
+    setSecondaryColor(isLightMode ? lightModeColors[nextIndex] : colors[nextIndex])
+  }
+
+  const toggleLightMode = () => {
+    const newMode = !isLightMode
+    setIsLightMode(newMode)
+    setSecondaryColor(newMode ? lightModeColors[colorIndex] : colors[colorIndex])
   }
 
   useEffect(() => {
@@ -64,7 +72,7 @@ export default function AiexecPage() {
 
     window.addEventListener("keydown", handleKeyPress)
     return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [colorIndex, showHelp])
+  }, [colorIndex, showHelp, isLightMode])
 
   const copyToClipboard = async () => {
     try {
@@ -76,14 +84,25 @@ export default function AiexecPage() {
     }
   }
 
+  const bgColor = isLightMode ? "#f5f5f5" : "#000000"
+  const textColor = isLightMode ? "#1a1a1a" : "#ffffff"
+  const borderColor = isLightMode ? "#1a1a1a" : "#ffffff"
+
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
-      {!isMobile && <CursorTrail />}
-      <Stickman secondaryColor={secondaryColor} onColorCycle={cycleColor} />
+    <div
+      className="min-h-screen relative overflow-x-hidden transition-colors duration-300"
+      style={{ backgroundColor: bgColor, color: textColor }}
+    >
+      {!isMobile && <CursorTrail isLightMode={isLightMode} />}
+      <Stickman
+        secondaryColor={secondaryColor}
+        onColorCycle={cycleColor}
+        isLightMode={isLightMode}
+        onToggleLightMode={toggleLightMode}
+      />
       {!isMobile && <HelpOverlay isVisible={showHelp} />}
       <ScrollToTop secondaryColor={secondaryColor} />
 
-      {/* Add top padding to account for fixed header */}
       <div className="pt-24 px-4 pb-16 animate-fade-in">
         <div className="max-w-4xl mx-auto">
           {/* Back link */}
@@ -106,14 +125,33 @@ export default function AiexecPage() {
           </div>
 
           {/* Install Box with GitHub Link */}
-          <div className="border border-white p-6 mb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div
+            className="border p-6 mb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+            style={{ borderColor: borderColor }}
+          >
             <div className="flex items-center gap-4 flex-1">
-              <div className="bg-black border border-white px-4 py-3 font-mono text-sm font-bold flex-1">
+              <div
+                className="border px-4 py-3 font-mono text-sm font-bold flex-1"
+                style={{ borderColor: borderColor, backgroundColor: isLightMode ? "#e5e5e5" : "#000000" }}
+              >
                 pip install aiexec
               </div>
               <button
                 onClick={copyToClipboard}
-                className="border border-white p-3 hover:bg-white hover:text-black transition-colors flex-shrink-0"
+                className="border p-3 transition-colors flex-shrink-0"
+                style={{ borderColor: borderColor }}
+                onMouseEnter={(e) => {
+                  if (!isMobile) {
+                    e.currentTarget.style.backgroundColor = textColor
+                    e.currentTarget.style.color = bgColor
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isMobile) {
+                    e.currentTarget.style.backgroundColor = "transparent"
+                    e.currentTarget.style.color = textColor
+                  }
+                }}
                 title="Copy to clipboard"
               >
                 <Copy className="w-5 h-5" />
@@ -124,14 +162,12 @@ export default function AiexecPage() {
               href="https://github.com/Caldas00/ai-executable"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-white px-6 py-3 font-black uppercase text-sm hover:text-black transition-colors whitespace-nowrap"
-              style={{
-                color: secondaryColor,
-              }}
+              className="inline-flex items-center gap-2 border px-6 py-3 font-black uppercase text-sm transition-colors whitespace-nowrap"
+              style={{ borderColor: borderColor, color: secondaryColor }}
               onMouseEnter={(e) => {
                 if (!isMobile) {
                   e.currentTarget.style.backgroundColor = secondaryColor
-                  e.currentTarget.style.color = "black"
+                  e.currentTarget.style.color = isLightMode ? "#f5f5f5" : "#000000"
                 }
               }}
               onMouseLeave={(e) => {
@@ -167,11 +203,14 @@ export default function AiexecPage() {
           </div>
 
           {/* Example */}
-          <div className="border border-white p-6">
+          <div className="border p-6" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Example Usage
             </h3>
-            <div className="bg-black border border-white p-4 font-mono text-sm">
+            <div
+              className="border p-4 font-mono text-sm"
+              style={{ borderColor: borderColor, backgroundColor: isLightMode ? "#e5e5e5" : "#000000" }}
+            >
               <code>aiexec run examples/setup_fastapi.ai</code>
             </div>
           </div>
@@ -179,10 +218,10 @@ export default function AiexecPage() {
       </div>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-white">
+      <footer className="py-8 px-4 border-t" style={{ borderColor: borderColor }}>
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-          <div className="text-sm opacity-60">Daily reader • Tennis enthusiast • Future Software Engineer</div>
+          <div className="text-sm opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
         </div>
       </footer>
 

@@ -67,7 +67,6 @@ const Calendar = ({ className }: { className?: string }) => (
   </svg>
 )
 
-// Simple down arrow component
 const ChevronDown = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -78,24 +77,24 @@ export default function Portfolio() {
   const [isLoading, setIsLoading] = useState(false)
   const [displayedText, setDisplayedText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [secondaryColor, setSecondaryColor] = useState("#7399C6")
+  const [secondaryColor, setSecondaryColor] = useState("#4A6FA5")
   const [colorIndex, setColorIndex] = useState(0)
   const [showHelp, setShowHelp] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
   const [showCursor, setShowCursor] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isLightMode, setIsLightMode] = useState(true)
 
-  const colors = ["#7399C6", "#FFB366", "#98D8A8"] // blue, pastel orange, pastel green
+  const colors = ["#7399C6", "#FFB366", "#98D8A8"]
+  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B"]
   const fullName = "Francisco Caldas."
 
-  // Refs for section animations
   const educationRef = useRef<HTMLElement>(null)
   const experienceRef = useRef<HTMLElement>(null)
   const skillsRef = useRef<HTMLElement>(null)
   const projectsRef = useRef<HTMLElement>(null)
   const contactRef = useRef<HTMLElement>(null)
 
-  // Check if mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
@@ -108,7 +107,13 @@ export default function Portfolio() {
   const cycleColor = () => {
     const nextIndex = (colorIndex + 1) % colors.length
     setColorIndex(nextIndex)
-    setSecondaryColor(colors[nextIndex])
+    setSecondaryColor(isLightMode ? lightModeColors[nextIndex] : colors[nextIndex])
+  }
+
+  const toggleLightMode = () => {
+    const newMode = !isLightMode
+    setIsLightMode(newMode)
+    setSecondaryColor(newMode ? lightModeColors[colorIndex] : colors[colorIndex])
   }
 
   const resetTypingAnimation = () => {
@@ -117,14 +122,12 @@ export default function Portfolio() {
     setIsTyping(true)
     setShowCursor(true)
 
-    // Fast cursor blink for 1 second before starting
     setTimeout(() => {
       setShowCursor(false)
       setCurrentIndex(0)
     }, 1000)
   }
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "c") {
@@ -136,9 +139,8 @@ export default function Portfolio() {
 
     window.addEventListener("keydown", handleKeyPress)
     return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [colorIndex, showHelp])
+  }, [colorIndex, showHelp, isLightMode])
 
-  // Section reveal animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -163,7 +165,6 @@ export default function Portfolio() {
     return () => observer.disconnect()
   }, [isLoading])
 
-  // Check if loading screen has been shown in this session
   useEffect(() => {
     const hasLoadedBefore = sessionStorage.getItem("hasLoadedPortfolio")
 
@@ -178,7 +179,6 @@ export default function Portfolio() {
 
       return () => clearTimeout(timer)
     } else {
-      // Skip loading screen, go straight to typing
       setIsTyping(true)
     }
   }, [])
@@ -254,7 +254,10 @@ export default function Portfolio() {
     },
   ]
 
-  // Component for links with hover message
+  const bgColor = isLightMode ? "#f5f5f5" : "#000000"
+  const textColor = isLightMode ? "#1a1a1a" : "#ffffff"
+  const borderColor = isLightMode ? "#1a1a1a" : "#ffffff"
+
   const LinkWithMessage = ({
     href,
     children,
@@ -265,7 +268,8 @@ export default function Portfolio() {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`text-white hover:transition-colors duration-300 ${className}`}
+        className={`hover:transition-colors duration-300 ${className}`}
+        style={{ color: textColor }}
         onMouseEnter={(e) => {
           if (!isMobile) {
             e.currentTarget.style.color = secondaryColor
@@ -273,7 +277,7 @@ export default function Portfolio() {
         }}
         onMouseLeave={(e) => {
           if (!isMobile) {
-            e.currentTarget.style.color = "white"
+            e.currentTarget.style.color = textColor
           }
         }}
       >
@@ -287,13 +291,20 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
-      {!isMobile && <CursorTrail />}
-      <Stickman secondaryColor={secondaryColor} onColorCycle={cycleColor} />
+    <div
+      className="min-h-screen relative overflow-x-hidden transition-colors duration-300"
+      style={{ backgroundColor: bgColor, color: textColor }}
+    >
+      {!isMobile && <CursorTrail isLightMode={isLightMode} />}
+      <Stickman
+        secondaryColor={secondaryColor}
+        onColorCycle={cycleColor}
+        isLightMode={isLightMode}
+        onToggleLightMode={toggleLightMode}
+      />
       {!isMobile && <HelpOverlay isVisible={showHelp} />}
       <ScrollToTop secondaryColor={secondaryColor} />
 
-      {/* Add top padding to account for fixed header */}
       <div className="pt-16">
         {/* Hero Section */}
         <section className="min-h-screen flex items-center justify-center px-4 relative">
@@ -305,46 +316,39 @@ export default function Portfolio() {
               >
                 {displayedText.split("").map((char, index) => (
                   <span key={index} className="relative inline-block">
-                    <span
-                      className={`${char === " " ? "" : "absolute inset-0 opacity-100 transition-opacity duration-300"}`}
-                      style={{
-                        backgroundColor: secondaryColor,
-                        animation: `highlight 0.3s ease-in-out ${index * 0.1}s forwards`,
-                      }}
-                    ></span>
-                    <span className="relative z-10" style={{ color: secondaryColor }}>
-                      {char}
+                    <span className="relative" style={{ color: secondaryColor }}>
+                      {char === " " ? "\u00A0" : char}
                     </span>
                   </span>
                 ))}
                 <span
-                  className={`inline-block w-1 h-8 sm:h-12 md:h-16 bg-white ml-2 ${showCursor ? "cursor-blink" : ""}`}
+                  className={`inline-block w-1 h-8 sm:h-12 md:h-16 ml-2 ${showCursor ? "cursor-blink" : ""}`}
+                  style={{ backgroundColor: textColor }}
                 ></span>
               </h1>
-              <div className="border-t border-white pt-4">
-                <div className="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider text-white">
+              <div className="border-t pt-4" style={{ borderColor: borderColor }}>
+                <div className="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider">
                   Computer Science & Engineering Student
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center justify-center gap-3 border border-white p-3">
+              <div className="flex items-center justify-center gap-3 border p-3" style={{ borderColor: borderColor }}>
                 <Calendar className="w-4 h-4 flex-shrink-0" />
                 <span className="text-sm sm:text-base">Born March 5, 2005</span>
               </div>
-              <div className="flex items-center justify-center gap-3 border border-white p-3">
+              <div className="flex items-center justify-center gap-3 border p-3" style={{ borderColor: borderColor }}>
                 <MapPin className="w-4 h-4 flex-shrink-0" />
                 <span className="text-sm sm:text-base">Lisbon, Portugal</span>
               </div>
-              <div className="flex items-center justify-center gap-3 border border-white p-3">
+              <div className="flex items-center justify-center gap-3 border p-3" style={{ borderColor: borderColor }}>
                 <Phone className="w-4 h-4 flex-shrink-0" />
                 <span className="text-sm sm:text-base">(+351) 962888488</span>
               </div>
             </div>
           </div>
 
-          {/* Scroll indicator - only on desktop */}
           {!isMobile && (
             <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
               <div
@@ -359,7 +363,7 @@ export default function Portfolio() {
         </section>
 
         {/* Education Section */}
-        <section ref={educationRef} className="py-16 px-4 border-t border-white">
+        <section ref={educationRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
             <div className="mb-12">
               <h2
@@ -368,12 +372,12 @@ export default function Portfolio() {
               >
                 Education
               </h2>
-              <div className="w-full h-px bg-white"></div>
+              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
             </div>
 
             <div className="space-y-8">
               {education.map((edu, index) => (
-                <div key={index} className="border border-white p-4">
+                <div key={index} className="border p-4" style={{ borderColor: borderColor }}>
                   <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
                     {edu.degree}
                   </div>
@@ -382,7 +386,7 @@ export default function Portfolio() {
                   </LinkWithMessage>
                   <div className="text-sm opacity-80 mb-1">{edu.period}</div>
                   <div className="text-sm opacity-80 mb-3">{edu.location}</div>
-                  <div className="border-t border-white pt-3">
+                  <div className="border-t pt-3" style={{ borderColor: borderColor }}>
                     <div className="font-black">GPA: {edu.gpa}</div>
                     {edu.note && <div className="font-medium mt-1 opacity-90">{edu.note}</div>}
                   </div>
@@ -393,7 +397,7 @@ export default function Portfolio() {
         </section>
 
         {/* Experience Section */}
-        <section ref={experienceRef} className="py-16 px-4 border-t border-white">
+        <section ref={experienceRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
             <div className="mb-12">
               <h2
@@ -402,12 +406,12 @@ export default function Portfolio() {
               >
                 Experience
               </h2>
-              <div className="w-full h-px bg-white"></div>
+              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
             </div>
 
             <div className="space-y-8">
               {experience.map((exp, index) => (
-                <div key={index} className="border border-white p-4">
+                <div key={index} className="border p-4" style={{ borderColor: borderColor }}>
                   <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
                     {exp.title}
                   </div>
@@ -416,7 +420,7 @@ export default function Portfolio() {
                   </LinkWithMessage>
                   <div className="text-sm opacity-80 mb-1">{exp.period}</div>
                   <div className="text-sm opacity-80 mb-3">{exp.location}</div>
-                  <div className="border-t border-white pt-3">
+                  <div className="border-t pt-3" style={{ borderColor: borderColor }}>
                     <div className="text-sm sm:text-base leading-relaxed">{exp.description}</div>
                   </div>
                 </div>
@@ -426,7 +430,7 @@ export default function Portfolio() {
         </section>
 
         {/* Technical Skills Section */}
-        <section ref={skillsRef} className="py-16 px-4 border-t border-white">
+        <section ref={skillsRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
             <div className="mb-12">
               <h2
@@ -435,18 +439,18 @@ export default function Portfolio() {
               >
                 Technical Skills
               </h2>
-              <div className="w-full h-px bg-white"></div>
+              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
             </div>
 
             <div className="space-y-8">
-              <div className="border border-white p-4">
+              <div className="border p-4" style={{ borderColor: borderColor }}>
                 <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
                   Programming
                 </div>
                 <div className="text-sm sm:text-base">C++ | Python | Java | SQL | Generative AI | APIs</div>
               </div>
 
-              <div className="border border-white p-4">
+              <div className="border p-4" style={{ borderColor: borderColor }}>
                 <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
                   Languages
                 </div>
@@ -457,7 +461,7 @@ export default function Portfolio() {
         </section>
 
         {/* Contact Section */}
-        <section ref={contactRef} className="py-16 px-4 border-t border-white">
+        <section ref={contactRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
             <div className="mb-12">
               <h2
@@ -466,24 +470,24 @@ export default function Portfolio() {
               >
                 Contact
               </h2>
-              <div className="w-full h-px bg-white"></div>
+              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
             </div>
 
             <div className="space-y-8">
               <div>
                 <div className="text-2xl font-black mb-8 uppercase">Get In Touch</div>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-4 border border-white p-4">
+                  <div className="flex items-center gap-4 border p-4" style={{ borderColor: borderColor }}>
                     <Mail className="w-5 h-5 flex-shrink-0" />
                     <LinkWithMessage href="mailto:franciscopirescaldas@gmail.com" className="text-sm break-all">
                       franciscopirescaldas@gmail.com
                     </LinkWithMessage>
                   </div>
-                  <div className="flex items-center gap-4 border border-white p-4">
+                  <div className="flex items-center gap-4 border p-4" style={{ borderColor: borderColor }}>
                     <Phone className="w-5 h-5 flex-shrink-0" />
                     <span className="text-sm">(+351) 962888488</span>
                   </div>
-                  <div className="flex items-center gap-4 border border-white p-4">
+                  <div className="flex items-center gap-4 border p-4" style={{ borderColor: borderColor }}>
                     <MapPin className="w-5 h-5 flex-shrink-0" />
                     <span className="text-sm">Lisbon, Portugal</span>
                   </div>
@@ -492,101 +496,32 @@ export default function Portfolio() {
                 <div className="flex gap-4 mt-8">
                   <LinkWithMessage
                     href="https://linkedin.com/in/francisco-pires-caldas/"
-                    className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
+                    className="border p-4 flex items-center gap-2 hover:border-current transition-colors"
                   >
-                    <Linkedin className="w-6 h-6" />
+                    <Linkedin className="w-5 h-5" />
+                    <span className="text-sm font-bold uppercase">LinkedIn</span>
                   </LinkWithMessage>
                   <LinkWithMessage
-                    href="https://github.com"
-                    className="border border-white p-3 hover:bg-white hover:text-black transition-colors block"
+                    href="https://github.com/Caldas00"
+                    className="border p-4 flex items-center gap-2 hover:border-current transition-colors"
                   >
-                    <Github className="w-6 h-6" />
+                    <Github className="w-5 h-5" />
+                    <span className="text-sm font-bold uppercase">GitHub</span>
                   </LinkWithMessage>
                 </div>
-              </div>
-
-              <div>
-                <form className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-bold mb-2 uppercase">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
-                      placeholder="Your name"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-bold mb-2 uppercase">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors"
-                      placeholder="your.email@example.com"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-bold mb-2 uppercase">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      className="w-full border border-white bg-black text-white p-3 focus:outline-none focus:bg-white focus:text-black transition-colors resize-none"
-                      placeholder="Your message..."
-                    ></textarea>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full border border-white bg-black text-white p-3 font-black uppercase hover:bg-white hover:text-black transition-colors"
-                  >
-                    Send Message
-                  </button>
-                </form>
               </div>
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="py-8 px-4 border-t border-white">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-            <div className="text-sm opacity-60">Daily reader • Tennis enthusiast • Future Software Engineer</div>
-          </div>
-        </footer>
       </div>
 
-      <style jsx>{`
-        @keyframes highlight {
-          0% {
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.3;
-          }
-          100% {
-            opacity: 0;
-          }
-        }
-
-        @keyframes bounce-subtle {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
-        }
-
-        .animate-bounce-subtle {
-          animation: bounce-subtle 2s ease-in-out infinite;
-        }
-      `}</style>
+      {/* Footer */}
+      <footer className="py-8 px-4 border-t" style={{ borderColor: borderColor }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
+          <div className="text-sm opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
+        </div>
+      </footer>
     </div>
   )
 }

@@ -10,9 +10,13 @@ interface Particle {
   char: string
 }
 
+interface CursorTrailProps {
+  isLightMode?: boolean
+}
+
 const ASCII_CHARS = ["*", "+", "x", "o", ".", "-", "|", "/", "\\", "^", "~"]
 
-export default function CursorTrail() {
+export default function CursorTrail({ isLightMode = false }: CursorTrailProps) {
   const [particles, setParticles] = useState<Particle[]>([])
 
   useEffect(() => {
@@ -49,17 +53,20 @@ export default function CursorTrail() {
     }
   }, [])
 
+  const cursorColor = isLightMode ? "#1a1a1a" : "#ffffff"
+
   return (
     <div className="fixed inset-0 pointer-events-none z-30">
       {particles.map((particle) => (
         <div
           key={particle.id}
-          className="absolute text-white font-mono text-sm select-none"
+          className="absolute font-mono text-sm select-none"
           style={{
             left: particle.x - 6,
             top: particle.y - 8,
             opacity: particle.opacity * 0.6,
             transform: `scale(${particle.opacity})`,
+            color: cursorColor,
           }}
         >
           {particle.char}

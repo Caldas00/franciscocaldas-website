@@ -19,12 +19,14 @@ const ExternalLink = ({ className }: { className?: string }) => (
 )
 
 export default function FlappyDQNPage() {
-  const [secondaryColor, setSecondaryColor] = useState("#7399C6")
+  const [secondaryColor, setSecondaryColor] = useState("#4A6FA5")
   const [colorIndex, setColorIndex] = useState(0)
   const [showHelp, setShowHelp] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isLightMode, setIsLightMode] = useState(true)
 
   const colors = ["#7399C6", "#FFB366", "#98D8A8"]
+  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B"]
 
   useEffect(() => {
     const checkMobile = () => {
@@ -38,7 +40,13 @@ export default function FlappyDQNPage() {
   const cycleColor = () => {
     const nextIndex = (colorIndex + 1) % colors.length
     setColorIndex(nextIndex)
-    setSecondaryColor(colors[nextIndex])
+    setSecondaryColor(isLightMode ? lightModeColors[nextIndex] : colors[nextIndex])
+  }
+
+  const toggleLightMode = () => {
+    const newMode = !isLightMode
+    setIsLightMode(newMode)
+    setSecondaryColor(newMode ? lightModeColors[colorIndex] : colors[colorIndex])
   }
 
   useEffect(() => {
@@ -52,16 +60,27 @@ export default function FlappyDQNPage() {
 
     window.addEventListener("keydown", handleKeyPress)
     return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [colorIndex, showHelp])
+  }, [colorIndex, showHelp, isLightMode])
+
+  const bgColor = isLightMode ? "#f5f5f5" : "#000000"
+  const textColor = isLightMode ? "#1a1a1a" : "#ffffff"
+  const borderColor = isLightMode ? "#1a1a1a" : "#ffffff"
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
-      {!isMobile && <CursorTrail />}
-      <Stickman secondaryColor={secondaryColor} onColorCycle={cycleColor} />
+    <div
+      className="min-h-screen relative overflow-x-hidden transition-colors duration-300"
+      style={{ backgroundColor: bgColor, color: textColor }}
+    >
+      {!isMobile && <CursorTrail isLightMode={isLightMode} />}
+      <Stickman
+        secondaryColor={secondaryColor}
+        onColorCycle={cycleColor}
+        isLightMode={isLightMode}
+        onToggleLightMode={toggleLightMode}
+      />
       {!isMobile && <HelpOverlay isVisible={showHelp} />}
       <ScrollToTop secondaryColor={secondaryColor} />
 
-      {/* Add top padding to account for fixed header */}
       <div className="pt-24 px-4 pb-16 animate-fade-in">
         <div className="max-w-4xl mx-auto">
           {/* Back link */}
@@ -83,20 +102,25 @@ export default function FlappyDQNPage() {
             <h2 className="text-xl sm:text-2xl font-bold opacity-90">Deep Q-Learning Neural Network</h2>
           </div>
 
+          <div className="mb-8 border-2 p-1" style={{ borderColor: secondaryColor }}>
+            <video className="w-full aspect-video object-cover" autoPlay loop muted playsInline controls preload="auto">
+              <source src="/video/pedaco.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
           {/* GitHub Link */}
-          <div className="border border-white p-6 mb-12">
+          <div className="border p-6 mb-12" style={{ borderColor: borderColor }}>
             <a
               href="https://github.com/Caldas00/flappy-bird-dqn"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-white px-6 py-3 font-black uppercase text-sm hover:text-black transition-colors"
-              style={{
-                color: secondaryColor,
-              }}
+              className="inline-flex items-center gap-2 border px-6 py-3 font-black uppercase text-sm transition-colors"
+              style={{ borderColor: borderColor, color: secondaryColor }}
               onMouseEnter={(e) => {
                 if (!isMobile) {
                   e.currentTarget.style.backgroundColor = secondaryColor
-                  e.currentTarget.style.color = "black"
+                  e.currentTarget.style.color = isLightMode ? "#f5f5f5" : "#000000"
                 }
               }}
               onMouseLeave={(e) => {
@@ -124,7 +148,7 @@ export default function FlappyDQNPage() {
           </div>
 
           {/* Neural Network Architecture */}
-          <div className="border border-white p-6 mb-8">
+          <div className="border p-6 mb-8" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Neural Network Architecture
             </h3>
@@ -135,7 +159,7 @@ export default function FlappyDQNPage() {
               </div>
               <div>
                 <div className="font-bold mb-2">Input (State Vector):</div>
-                <div className="pl-4">~6 continuous features:</div>
+                <div className="pl-4">6 continuous features:</div>
                 <ul className="list-disc pl-8 mt-2 space-y-1 opacity-90">
                   <li>Bird vertical position</li>
                   <li>Velocity</li>
@@ -159,13 +183,13 @@ export default function FlappyDQNPage() {
               </div>
               <div>
                 <div className="font-bold mb-2">Total Parameters:</div>
-                <div className="pl-4">~20,000 to 30,000</div>
+                <div className="pl-4">20,000 to 30,000</div>
               </div>
             </div>
           </div>
 
           {/* Training Mechanism */}
-          <div className="border border-white p-6 mb-8">
+          <div className="border p-6 mb-8" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Training Mechanism
             </h3>
@@ -195,11 +219,14 @@ export default function FlappyDQNPage() {
           </div>
 
           {/* Loss Formula */}
-          <div className="border border-white p-6 mb-8">
+          <div className="border p-6 mb-8" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Loss Function
             </h3>
-            <div className="bg-black border border-white p-4 font-mono text-sm mb-4 overflow-x-auto">
+            <div
+              className="border p-4 font-mono text-sm mb-4 overflow-x-auto"
+              style={{ borderColor: borderColor, backgroundColor: isLightMode ? "#e5e5e5" : "#000000" }}
+            >
               <div className="whitespace-nowrap">
                 L = (r + γ × max_a&apos; Q_target(s&apos;, a&apos;) − Q_policy(s, a))²
               </div>
@@ -225,7 +252,7 @@ export default function FlappyDQNPage() {
           </div>
 
           {/* Training Parameters */}
-          <div className="border border-white p-6 mb-8">
+          <div className="border p-6 mb-8" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Training Parameters
             </h3>
@@ -250,7 +277,7 @@ export default function FlappyDQNPage() {
           </div>
 
           {/* Training Loop */}
-          <div className="border border-white p-6 mb-8">
+          <div className="border p-6 mb-8" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Training Loop
             </h3>
@@ -266,7 +293,7 @@ export default function FlappyDQNPage() {
           </div>
 
           {/* Learning Objective */}
-          <div className="border border-white p-6">
+          <div className="border p-6" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Learning Objective
             </h3>
@@ -280,10 +307,10 @@ export default function FlappyDQNPage() {
       </div>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-white">
+      <footer className="py-8 px-4 border-t" style={{ borderColor: borderColor }}>
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-          <div className="text-sm opacity-60">Daily reader • Tennis enthusiast • Future Software Engineer</div>
+          <div className="text-sm opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
         </div>
       </footer>
 
