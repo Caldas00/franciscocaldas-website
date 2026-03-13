@@ -58,6 +58,8 @@ export default function ProjectsPage() {
       description:
         "Computer vision system to automatically detect sponsor advertisements in Portuguese football broadcasts, giving companies a data-driven way to measure their broadcast ROI.",
       link: "/projects/yolo-liga",
+      color: isLightMode ? "#4A6FA5" : "#7399C6",
+      tag: "Computer Vision",
     },
     {
       id: "flappy-dqn",
@@ -65,6 +67,8 @@ export default function ProjectsPage() {
       description:
         "Deep Q-Learning neural network that learns to play Flappy Bird through reinforcement learning with 25K parameters and epsilon-greedy exploration.",
       link: "/projects/flappy-dqn",
+      color: isLightMode ? "#CC8A3D" : "#FFB366",
+      tag: "Reinforcement Learning",
     },
   ]
 
@@ -106,32 +110,52 @@ export default function ProjectsPage() {
               <div key={project.id}>
                 <Link
                   href={project.link}
-                  className="border p-6 block transition-all"
-                  style={{ borderColor: borderColor }}
+                  className="border-2 p-6 block transition-all group relative overflow-hidden"
+                  style={{ borderColor: project.color }}
                   onMouseEnter={(e) => {
                     if (!isMobile) {
-                      e.currentTarget.style.borderColor = secondaryColor
+                      e.currentTarget.style.backgroundColor = isLightMode 
+                        ? `${project.color}10` 
+                        : `${project.color}15`
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isMobile) {
-                      e.currentTarget.style.borderColor = borderColor
+                      e.currentTarget.style.backgroundColor = 'transparent'
                     }
                   }}
                 >
-
+                  {/* Tag */}
+                  <div 
+                    className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider mb-4"
+                    style={{ 
+                      backgroundColor: project.color,
+                      color: isLightMode ? '#f5f5f5' : '#000000'
+                    }}
+                  >
+                    {project.tag}
+                  </div>
+                  
                   <h2
                     className="text-2xl sm:text-3xl font-black mb-3 uppercase transition-colors"
-                    style={{ color: secondaryColor }}
+                    style={{ color: project.color }}
                   >
                     {project.name}
                   </h2>
                   <p className="text-sm sm:text-base leading-relaxed mb-4 opacity-90">{project.description}</p>
+                  
+                  {/* Accent line */}
+                  <div 
+                    className="absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-300"
+                    style={{ backgroundColor: project.color }}
+                  />
+                  
                   <div
-                    className="text-sm font-bold uppercase tracking-wide inline-block"
-                    style={{ color: secondaryColor }}
+                    className="text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2"
+                    style={{ color: project.color }}
                   >
                     Read more
+                    <span className="group-hover:translate-x-1 transition-transform">→</span>
                   </div>
                 </Link>
               </div>
