@@ -201,7 +201,7 @@ export default function Portfolio() {
       institution: "Instituto Superior Técnico – University of Lisbon",
       period: "September 2023 – Present",
       location: "Lisbon, Portugal",
-      gpa: "16 / 20",
+      gpa: "15.4 / 20",
       link: "https://tecnico.ulisboa.pt/en/",
     },
     {
@@ -254,6 +254,18 @@ export default function Portfolio() {
     },
   ]
 
+  const volunteering = [
+    {
+      title: "Volunteer",
+      organization: "Fundação Candeia",
+      period: "September 2025 – Present",
+      location: "Lisbon, Portugal",
+      description:
+        "Organize weekly activities for children in foster care homes, fostering their social and emotional development. Coordinate with a team of volunteers to plan engaging educational and recreational programs.",
+      link: "https://www.candeia.org",
+    },
+  ]
+
   const bgColor = isLightMode ? "#f5f5f5" : "#000000"
   const textColor = isLightMode ? "#1a1a1a" : "#ffffff"
   const borderColor = isLightMode ? "#1a1a1a" : "#ffffff"
@@ -303,48 +315,93 @@ export default function Portfolio() {
         onToggleLightMode={toggleLightMode}
       />
       {!isMobile && <HelpOverlay isVisible={showHelp} />}
-      <ScrollToTop secondaryColor={secondaryColor} />
+      <ScrollToTop secondaryColor={secondaryColor} isLightMode={isLightMode} />
 
       <div className="pt-16">
         {/* Hero Section */}
         <section className="min-h-screen flex items-center justify-center px-4 relative">
           <div className="text-center w-full max-w-4xl mx-auto">
-            <div className="mb-8">
-              <h1
-                className="text-3xl sm:text-5xl md:text-7xl font-black mb-8 leading-none tracking-tight cursor-pointer"
-                onClick={resetTypingAnimation}
-              >
-                {displayedText.split("").map((char, index) => (
-                  <span key={index} className="relative inline-block">
-                    <span className="relative" style={{ color: secondaryColor }}>
-                      {char === " " ? "\u00A0" : char}
+            <div className="mb-12">
+              <div className="relative inline-block">
+                <h1
+                  className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 leading-none tracking-tight cursor-pointer"
+                  onClick={resetTypingAnimation}
+                >
+                  {displayedText.split("").map((char, index) => (
+                    <span key={index} className="relative inline-block">
+                      <span className="relative" style={{ color: secondaryColor }}>
+                        {char === " " ? "\u00A0" : char}
+                      </span>
                     </span>
-                  </span>
-                ))}
-                <span
-                  className={`inline-block w-1 h-8 sm:h-12 md:h-16 ml-2 ${showCursor ? "cursor-blink" : ""}`}
-                  style={{ backgroundColor: textColor }}
-                ></span>
-              </h1>
-              <div className="border-t pt-4" style={{ borderColor: borderColor }}>
-                <div className="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-wider">
+                  ))}
+                  <span
+                    className={`inline-block w-1 h-10 sm:h-14 md:h-20 ml-2 align-middle ${showCursor ? "cursor-blink" : ""}`}
+                    style={{ backgroundColor: textColor }}
+                  ></span>
+                </h1>
+                {/* Animated underline */}
+                <div 
+                  className="h-1 sm:h-2 w-full transition-all duration-500"
+                  style={{ backgroundColor: secondaryColor }}
+                />
+              </div>
+              
+              <div className="mt-6">
+                <div 
+                  className="text-sm sm:text-lg md:text-xl font-bold uppercase tracking-widest inline-block px-4 py-2"
+                  style={{ 
+                    border: `2px solid ${secondaryColor}`,
+                    color: secondaryColor
+                  }}
+                >
                   Computer Science & Engineering Student
                 </div>
               </div>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-center gap-3 border p-3" style={{ borderColor: borderColor }}>
-                <Calendar className="w-4 h-4 flex-shrink-0" />
-                <span className="text-sm sm:text-base">Born March 5, 2005</span>
+            {/* Personal Info Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div 
+                className="flex items-center justify-center gap-3 p-4 transition-all duration-300 group"
+                style={{ 
+                  border: `2px solid ${borderColor}`,
+                  borderLeftWidth: '4px',
+                  borderLeftColor: secondaryColor
+                }}
+              >
+                <Calendar className="w-5 h-5 flex-shrink-0" style={{ color: secondaryColor }} />
+                <div className="text-left">
+                  <div className="text-xs uppercase tracking-wider opacity-60">Born</div>
+                  <span className="text-sm sm:text-base font-bold">March 5, 2005</span>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-3 border p-3" style={{ borderColor: borderColor }}>
-                <MapPin className="w-4 h-4 flex-shrink-0" />
-                <span className="text-sm sm:text-base">Lisbon, Portugal</span>
+              <div 
+                className="flex items-center justify-center gap-3 p-4 transition-all duration-300 group"
+                style={{ 
+                  border: `2px solid ${borderColor}`,
+                  borderLeftWidth: '4px',
+                  borderLeftColor: secondaryColor
+                }}
+              >
+                <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: secondaryColor }} />
+                <div className="text-left">
+                  <div className="text-xs uppercase tracking-wider opacity-60">Location</div>
+                  <span className="text-sm sm:text-base font-bold">Lisbon, Portugal</span>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-3 border p-3" style={{ borderColor: borderColor }}>
-                <Phone className="w-4 h-4 flex-shrink-0" />
-                <span className="text-sm sm:text-base">(+351) 962888488</span>
+              <div 
+                className="flex items-center justify-center gap-3 p-4 transition-all duration-300 group"
+                style={{ 
+                  border: `2px solid ${borderColor}`,
+                  borderLeftWidth: '4px',
+                  borderLeftColor: secondaryColor
+                }}
+              >
+                <Phone className="w-5 h-5 flex-shrink-0" style={{ color: secondaryColor }} />
+                <div className="text-left">
+                  <div className="text-xs uppercase tracking-wider opacity-60">Phone</div>
+                  <span className="text-sm sm:text-base font-bold">(+351) 962888488</span>
+                </div>
               </div>
             </div>
           </div>
@@ -363,32 +420,78 @@ export default function Portfolio() {
         </section>
 
         {/* Education Section */}
-        <section ref={educationRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
+        <section ref={educationRef} className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
-            <div className="mb-12">
-              <h2
-                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-                style={{ color: secondaryColor }}
-              >
-                Education
-              </h2>
-              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
+            <div className="mb-16">
+              <div className="flex items-center gap-4 mb-4">
+                <div 
+                  className="w-12 h-12 flex items-center justify-center text-2xl font-black"
+                  style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                >
+                  01
+                </div>
+                <h2
+                  className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
+                  style={{ color: secondaryColor }}
+                >
+                  Education
+                </h2>
+              </div>
+              <div className="w-full h-1" style={{ backgroundColor: secondaryColor }}></div>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-6">
               {education.map((edu, index) => (
-                <div key={index} className="border p-4" style={{ borderColor: borderColor }}>
-                  <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
-                    {edu.degree}
-                  </div>
-                  <LinkWithMessage href={edu.link} className="text-base sm:text-lg font-bold mb-2 block">
-                    {edu.institution}
-                  </LinkWithMessage>
-                  <div className="text-sm opacity-80 mb-1">{edu.period}</div>
-                  <div className="text-sm opacity-80 mb-3">{edu.location}</div>
-                  <div className="border-t pt-3" style={{ borderColor: borderColor }}>
-                    <div className="font-black">GPA: {edu.gpa}</div>
-                    {edu.note && <div className="font-medium mt-1 opacity-90">{edu.note}</div>}
+                <div 
+                  key={index} 
+                  className="relative pl-6 transition-all duration-300 group"
+                  style={{ 
+                    borderLeft: `4px solid ${secondaryColor}`,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = isLightMode ? `${secondaryColor}10` : `${secondaryColor}15`
+                      e.currentTarget.style.paddingLeft = '2rem'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.paddingLeft = '1.5rem'
+                    }
+                  }}
+                >
+                  <div className="p-4">
+                    <div className="text-xl sm:text-2xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                      {edu.degree}
+                    </div>
+                    <LinkWithMessage href={edu.link} className="text-base sm:text-lg font-bold mb-3 block">
+                      {edu.institution}
+                    </LinkWithMessage>
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <span 
+                        className="text-xs font-bold uppercase px-2 py-1"
+                        style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                      >
+                        {edu.period}
+                      </span>
+                      <span className="text-sm opacity-70">{edu.location}</span>
+                    </div>
+                    <div 
+                      className="border-t-2 pt-4 flex flex-wrap gap-4"
+                      style={{ borderColor: `${secondaryColor}50` }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs uppercase tracking-wider opacity-60">GPA</span>
+                        <span className="font-black text-lg" style={{ color: secondaryColor }}>{edu.gpa}</span>
+                      </div>
+                      {edu.note && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs uppercase tracking-wider opacity-60">Note</span>
+                          <span className="font-bold">{edu.note}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -397,31 +500,140 @@ export default function Portfolio() {
         </section>
 
         {/* Experience Section */}
-        <section ref={experienceRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
+        <section ref={experienceRef} className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
-            <div className="mb-12">
-              <h2
-                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-                style={{ color: secondaryColor }}
-              >
-                Experience
-              </h2>
-              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
+            <div className="mb-16">
+              <div className="flex items-center gap-4 mb-4">
+                <div 
+                  className="w-12 h-12 flex items-center justify-center text-2xl font-black"
+                  style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                >
+                  02
+                </div>
+                <h2
+                  className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
+                  style={{ color: secondaryColor }}
+                >
+                  Experience
+                </h2>
+              </div>
+              <div className="w-full h-1" style={{ backgroundColor: secondaryColor }}></div>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-6">
               {experience.map((exp, index) => (
-                <div key={index} className="border p-4" style={{ borderColor: borderColor }}>
-                  <div className="text-lg sm:text-xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
-                    {exp.title}
+                <div 
+                  key={index} 
+                  className="relative pl-6 transition-all duration-300 group"
+                  style={{ 
+                    borderLeft: `4px solid ${secondaryColor}`,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = isLightMode ? `${secondaryColor}10` : `${secondaryColor}15`
+                      e.currentTarget.style.paddingLeft = '2rem'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.paddingLeft = '1.5rem'
+                    }
+                  }}
+                >
+                  <div className="p-4">
+                    <div className="text-xl sm:text-2xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                      {exp.title}
+                    </div>
+                    <LinkWithMessage href={exp.link} className="text-base sm:text-lg font-bold mb-3 block">
+                      {exp.company}
+                    </LinkWithMessage>
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <span 
+                        className="text-xs font-bold uppercase px-2 py-1"
+                        style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                      >
+                        {exp.period}
+                      </span>
+                      <span className="text-sm opacity-70">{exp.location}</span>
+                    </div>
+                    <div 
+                      className="border-t-2 pt-4"
+                      style={{ borderColor: `${secondaryColor}50` }}
+                    >
+                      <div className="text-sm sm:text-base leading-relaxed">{exp.description}</div>
+                    </div>
                   </div>
-                  <LinkWithMessage href={exp.link} className="text-base sm:text-lg font-bold mb-2 block">
-                    {exp.company}
-                  </LinkWithMessage>
-                  <div className="text-sm opacity-80 mb-1">{exp.period}</div>
-                  <div className="text-sm opacity-80 mb-3">{exp.location}</div>
-                  <div className="border-t pt-3" style={{ borderColor: borderColor }}>
-                    <div className="text-sm sm:text-base leading-relaxed">{exp.description}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Volunteering Section */}
+        <section className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-16">
+              <div className="flex items-center gap-4 mb-4">
+                <div 
+                  className="w-12 h-12 flex items-center justify-center text-2xl font-black"
+                  style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                >
+                  03
+                </div>
+                <h2
+                  className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
+                  style={{ color: secondaryColor }}
+                >
+                  Volunteering
+                </h2>
+              </div>
+              <div className="w-full h-1" style={{ backgroundColor: secondaryColor }}></div>
+            </div>
+
+            <div className="space-y-6">
+              {volunteering.map((vol, index) => (
+                <div 
+                  key={index} 
+                  className="relative pl-6 transition-all duration-300 group"
+                  style={{ 
+                    borderLeft: `4px solid ${secondaryColor}`,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = isLightMode ? `${secondaryColor}10` : `${secondaryColor}15`
+                      e.currentTarget.style.paddingLeft = '2rem'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.paddingLeft = '1.5rem'
+                    }
+                  }}
+                >
+                  <div className="p-4">
+                    <div className="text-xl sm:text-2xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                      {vol.title}
+                    </div>
+                    <LinkWithMessage href={vol.link} className="text-base sm:text-lg font-bold mb-3 block">
+                      {vol.organization}
+                    </LinkWithMessage>
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <span 
+                        className="text-xs font-bold uppercase px-2 py-1"
+                        style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                      >
+                        {vol.period}
+                      </span>
+                      <span className="text-sm opacity-70">{vol.location}</span>
+                    </div>
+                    <div 
+                      className="border-t-2 pt-4"
+                      style={{ borderColor: `${secondaryColor}50` }}
+                    >
+                      <div className="text-sm sm:text-base leading-relaxed">{vol.description}</div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -430,84 +642,279 @@ export default function Portfolio() {
         </section>
 
         {/* Technical Skills Section */}
-        <section ref={skillsRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
+        <section ref={skillsRef} className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
-            <div className="mb-12">
-              <h2
-                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-                style={{ color: secondaryColor }}
-              >
-                Technical Skills
-              </h2>
-              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
+            <div className="mb-16">
+              <div className="flex items-center gap-4 mb-4">
+                <div 
+                  className="w-12 h-12 flex items-center justify-center text-2xl font-black"
+                  style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                >
+                  04
+                </div>
+                <h2
+                  className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
+                  style={{ color: secondaryColor }}
+                >
+                  Technical Skills
+                </h2>
+              </div>
+              <div className="w-full h-1" style={{ backgroundColor: secondaryColor }}></div>
             </div>
 
             <div className="space-y-8">
-              <div className="border p-4" style={{ borderColor: borderColor }}>
-                <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
-                  Programming
+              {[
+                { title: 'Programming', skills: ['C++', 'Python', 'Java', 'SQL'] },
+                { title: 'Frameworks & Libraries', skills: ['FastAPI', 'Flask', 'PyTorch', 'Ultralytics', 'CrewAI', 'OpenClaw'] },
+                { title: 'DevOps & Tools', skills: ['Docker', 'Git', 'Linux', 'PostgreSQL'] },
+                { title: 'Cloud', skills: ['Azure', 'Cloud GPU (RunPod)'] },
+              ].map((category) => (
+                <div 
+                  key={category.title}
+                  className="p-6"
+                  style={{ 
+                    borderLeft: `4px solid ${secondaryColor}`,
+                    backgroundColor: isLightMode ? `${secondaryColor}08` : `${secondaryColor}10`
+                  }}
+                >
+                  <div className="text-lg font-black mb-6 uppercase" style={{ color: secondaryColor }}>
+                    {category.title}
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {category.skills.map((skill) => (
+                      <span 
+                        key={skill}
+                        className="px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-300 cursor-default"
+                        style={{ 
+                          border: `2px solid ${secondaryColor}`,
+                          color: secondaryColor
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isMobile) {
+                            e.currentTarget.style.backgroundColor = secondaryColor
+                            e.currentTarget.style.color = isLightMode ? '#f5f5f5' : '#000000'
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isMobile) {
+                            e.currentTarget.style.backgroundColor = 'transparent'
+                            e.currentTarget.style.color = secondaryColor
+                          }
+                        }}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="text-sm sm:text-base">C++ | Python | Java | SQL | Generative AI | APIs</div>
-              </div>
+              ))}
 
-              <div className="border p-4" style={{ borderColor: borderColor }}>
-                <div className="text-lg font-black mb-4 uppercase" style={{ color: secondaryColor }}>
+              <div 
+                className="p-6"
+                style={{ 
+                  borderLeft: `4px solid ${secondaryColor}`,
+                  backgroundColor: isLightMode ? `${secondaryColor}08` : `${secondaryColor}10`
+                }}
+              >
+                <div className="text-lg font-black mb-6 uppercase" style={{ color: secondaryColor }}>
                   Languages
                 </div>
-                <div className="text-sm sm:text-base">Portuguese (Native) | English (Level C1)</div>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    { name: 'Portuguese', level: 'Native' },
+                    { name: 'English', level: 'C1' }
+                  ].map((lang) => (
+                    <div 
+                      key={lang.name}
+                      className="flex items-center gap-2 px-4 py-2 transition-all duration-300"
+                      style={{ 
+                        border: `2px solid ${secondaryColor}`,
+                      }}
+                    >
+                      <span className="font-bold uppercase" style={{ color: secondaryColor }}>{lang.name}</span>
+                      <span 
+                        className="text-xs font-bold px-2 py-0.5"
+                        style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                      >
+                        {lang.level}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Contact Section */}
-        <section ref={contactRef} className="py-16 px-4 border-t" style={{ borderColor: borderColor }}>
+        <section ref={contactRef} className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
-            <div className="mb-12">
-              <h2
-                className="text-3xl sm:text-5xl font-black uppercase tracking-wider mb-4"
-                style={{ color: secondaryColor }}
-              >
-                Contact
-              </h2>
-              <div className="w-full h-px" style={{ backgroundColor: borderColor }}></div>
+            <div className="mb-16">
+              <div className="flex items-center gap-4 mb-4">
+                <div 
+                  className="w-12 h-12 flex items-center justify-center text-2xl font-black"
+                  style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                >
+                  05
+                </div>
+                <h2
+                  className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
+                  style={{ color: secondaryColor }}
+                >
+                  Contact
+                </h2>
+              </div>
+              <div className="w-full h-1" style={{ backgroundColor: secondaryColor }}></div>
             </div>
 
-            <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Contact Info */}
               <div>
-                <div className="text-2xl font-black mb-8 uppercase">Get In Touch</div>
+                <div 
+                  className="text-xl font-black mb-6 uppercase flex items-center gap-3"
+                  style={{ color: secondaryColor }}
+                >
+                  <span className="w-8 h-0.5" style={{ backgroundColor: secondaryColor }}></span>
+                  Get In Touch
+                </div>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-4 border p-4" style={{ borderColor: borderColor }}>
-                    <Mail className="w-5 h-5 flex-shrink-0" />
-                    <LinkWithMessage href="mailto:franciscopirescaldas@gmail.com" className="text-sm break-all">
-                      franciscopirescaldas@gmail.com
-                    </LinkWithMessage>
+                  <a
+                    href="mailto:franciscopirescaldas@gmail.com"
+                    className="flex items-center gap-4 p-4 transition-all duration-300 group"
+                    style={{ 
+                      border: `2px solid ${borderColor}`,
+                      borderLeftWidth: '4px',
+                      borderLeftColor: secondaryColor
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = isLightMode ? `${secondaryColor}10` : `${secondaryColor}15`
+                        e.currentTarget.style.borderColor = secondaryColor
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                        e.currentTarget.style.borderColor = borderColor
+                        e.currentTarget.style.borderLeftColor = secondaryColor
+                      }
+                    }}
+                  >
+                    <Mail className="w-6 h-6 flex-shrink-0" style={{ color: secondaryColor }} />
+                    <div>
+                      <div className="text-xs uppercase tracking-wider opacity-60 mb-1">Email</div>
+                      <span className="text-sm font-bold break-all">franciscopirescaldas@gmail.com</span>
+                    </div>
+                  </a>
+                  <div 
+                    className="flex items-center gap-4 p-4"
+                    style={{ 
+                      border: `2px solid ${borderColor}`,
+                      borderLeftWidth: '4px',
+                      borderLeftColor: secondaryColor
+                    }}
+                  >
+                    <Phone className="w-6 h-6 flex-shrink-0" style={{ color: secondaryColor }} />
+                    <div>
+                      <div className="text-xs uppercase tracking-wider opacity-60 mb-1">Phone</div>
+                      <span className="text-sm font-bold">(+351) 962888488</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-4 border p-4" style={{ borderColor: borderColor }}>
-                    <Phone className="w-5 h-5 flex-shrink-0" />
-                    <span className="text-sm">(+351) 962888488</span>
-                  </div>
-                  <div className="flex items-center gap-4 border p-4" style={{ borderColor: borderColor }}>
-                    <MapPin className="w-5 h-5 flex-shrink-0" />
-                    <span className="text-sm">Lisbon, Portugal</span>
+                  <div 
+                    className="flex items-center gap-4 p-4"
+                    style={{ 
+                      border: `2px solid ${borderColor}`,
+                      borderLeftWidth: '4px',
+                      borderLeftColor: secondaryColor
+                    }}
+                  >
+                    <MapPin className="w-6 h-6 flex-shrink-0" style={{ color: secondaryColor }} />
+                    <div>
+                      <div className="text-xs uppercase tracking-wider opacity-60 mb-1">Location</div>
+                      <span className="text-sm font-bold">Lisbon, Portugal</span>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex gap-4 mt-8">
-                  <LinkWithMessage
+              {/* Social Links */}
+              <div>
+                <div 
+                  className="text-xl font-black mb-6 uppercase flex items-center gap-3"
+                  style={{ color: secondaryColor }}
+                >
+                  <span className="w-8 h-0.5" style={{ backgroundColor: secondaryColor }}></span>
+                  Connect
+                </div>
+                <div className="space-y-4">
+                  <a
                     href="https://linkedin.com/in/francisco-pires-caldas/"
-                    className="border p-4 flex items-center gap-2 hover:border-current transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 p-6 transition-all duration-300 group"
+                    style={{ 
+                      border: `2px solid ${secondaryColor}`,
+                      backgroundColor: 'transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = secondaryColor
+                        const spans = e.currentTarget.querySelectorAll('span')
+                        spans.forEach(span => span.style.color = isLightMode ? '#f5f5f5' : '#000000')
+                        const svg = e.currentTarget.querySelector('svg')
+                        if (svg) svg.style.color = isLightMode ? '#f5f5f5' : '#000000'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                        const spans = e.currentTarget.querySelectorAll('span')
+                        spans.forEach(span => span.style.color = secondaryColor)
+                        const svg = e.currentTarget.querySelector('svg')
+                        if (svg) svg.style.color = secondaryColor
+                      }
+                    }}
                   >
-                    <Linkedin className="w-5 h-5" />
-                    <span className="text-sm font-bold uppercase">LinkedIn</span>
-                  </LinkWithMessage>
-                  <LinkWithMessage
+                    <Linkedin className="w-8 h-8 transition-colors" style={{ color: secondaryColor }} />
+                    <div>
+                      <span className="text-lg font-black uppercase block transition-colors" style={{ color: secondaryColor }}>LinkedIn</span>
+                      <span className="text-xs opacity-70 transition-colors" style={{ color: secondaryColor }}>Connect professionally</span>
+                    </div>
+                  </a>
+                  <a
                     href="https://github.com/Caldas00"
-                    className="border p-4 flex items-center gap-2 hover:border-current transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 p-6 transition-all duration-300 group"
+                    style={{ 
+                      border: `2px solid ${secondaryColor}`,
+                      backgroundColor: 'transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = secondaryColor
+                        const spans = e.currentTarget.querySelectorAll('span')
+                        spans.forEach(span => span.style.color = isLightMode ? '#f5f5f5' : '#000000')
+                        const svg = e.currentTarget.querySelector('svg')
+                        if (svg) svg.style.color = isLightMode ? '#f5f5f5' : '#000000'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                        const spans = e.currentTarget.querySelectorAll('span')
+                        spans.forEach(span => span.style.color = secondaryColor)
+                        const svg = e.currentTarget.querySelector('svg')
+                        if (svg) svg.style.color = secondaryColor
+                      }
+                    }}
                   >
-                    <Github className="w-5 h-5" />
-                    <span className="text-sm font-bold uppercase">GitHub</span>
-                  </LinkWithMessage>
+                    <Github className="w-8 h-8 transition-colors" style={{ color: secondaryColor }} />
+                    <div>
+                      <span className="text-lg font-black uppercase block transition-colors" style={{ color: secondaryColor }}>GitHub</span>
+                      <span className="text-xs opacity-70 transition-colors" style={{ color: secondaryColor }}>View my code</span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -516,10 +923,17 @@ export default function Portfolio() {
       </div>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t" style={{ borderColor: borderColor }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-          <div className="text-sm opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
+      <footer className="py-12 px-4 border-t-2" style={{ borderColor: secondaryColor }}>
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+              <div className="text-2xl font-black" style={{ color: secondaryColor }}>FC.</div>
+            </div>
+            <div className="text-center md:text-right">
+              <div className="text-sm opacity-80 mb-1">&copy; 2025 Francisco Caldas. All rights reserved.</div>
+              <div className="text-xs opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
