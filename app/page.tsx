@@ -201,7 +201,7 @@ export default function Portfolio() {
       institution: "Instituto Superior Técnico – University of Lisbon",
       period: "September 2023 – Present",
       location: "Lisbon, Portugal",
-      gpa: "16 / 20",
+      gpa: "15.4 / 20",
       link: "https://tecnico.ulisboa.pt/en/",
     },
     {
@@ -251,6 +251,18 @@ export default function Portfolio() {
       description:
         "Real-time monitoring of rights infringement related to sports broadcasts. Identified and reported unauthorized streams of live sports events.",
       link: "https://sportmultimedia.pt",
+    },
+  ]
+
+  const volunteering = [
+    {
+      title: "Volunteer",
+      organization: "Fundação Candeia",
+      period: "September 2025 – Present",
+      location: "Lisbon, Portugal",
+      description:
+        "Organize weekly activities for children in foster care homes, fostering their social and emotional development. Coordinate with a team of volunteers to plan engaging educational and recreational programs.",
+      link: "https://www.candeia.org",
     },
   ]
 
@@ -558,8 +570,8 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Technical Skills Section */}
-        <section ref={skillsRef} className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
+        {/* Volunteering Section */}
+        <section className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
           <div className="max-w-4xl mx-auto">
             <div className="mb-16">
               <div className="flex items-center gap-4 mb-4">
@@ -573,6 +585,77 @@ export default function Portfolio() {
                   className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
                   style={{ color: secondaryColor }}
                 >
+                  Volunteering
+                </h2>
+              </div>
+              <div className="w-full h-1" style={{ backgroundColor: secondaryColor }}></div>
+            </div>
+
+            <div className="space-y-6">
+              {volunteering.map((vol, index) => (
+                <div 
+                  key={index} 
+                  className="relative pl-6 transition-all duration-300 group"
+                  style={{ 
+                    borderLeft: `4px solid ${secondaryColor}`,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = isLightMode ? `${secondaryColor}10` : `${secondaryColor}15`
+                      e.currentTarget.style.paddingLeft = '2rem'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isMobile) {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.paddingLeft = '1.5rem'
+                    }
+                  }}
+                >
+                  <div className="p-4">
+                    <div className="text-xl sm:text-2xl font-black mb-2 uppercase" style={{ color: secondaryColor }}>
+                      {vol.title}
+                    </div>
+                    <LinkWithMessage href={vol.link} className="text-base sm:text-lg font-bold mb-3 block">
+                      {vol.organization}
+                    </LinkWithMessage>
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <span 
+                        className="text-xs font-bold uppercase px-2 py-1"
+                        style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                      >
+                        {vol.period}
+                      </span>
+                      <span className="text-sm opacity-70">{vol.location}</span>
+                    </div>
+                    <div 
+                      className="border-t-2 pt-4"
+                      style={{ borderColor: `${secondaryColor}50` }}
+                    >
+                      <div className="text-sm sm:text-base leading-relaxed">{vol.description}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Technical Skills Section */}
+        <section ref={skillsRef} className="py-20 px-4 border-t" style={{ borderColor: borderColor }}>
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-16">
+              <div className="flex items-center gap-4 mb-4">
+                <div 
+                  className="w-12 h-12 flex items-center justify-center text-2xl font-black"
+                  style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
+                >
+                  04
+                </div>
+                <h2
+                  className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
+                  style={{ color: secondaryColor }}
+                >
                   Technical Skills
                 </h2>
               </div>
@@ -580,43 +663,51 @@ export default function Portfolio() {
             </div>
 
             <div className="space-y-8">
-              <div 
-                className="p-6"
-                style={{ 
-                  borderLeft: `4px solid ${secondaryColor}`,
-                  backgroundColor: isLightMode ? `${secondaryColor}08` : `${secondaryColor}10`
-                }}
-              >
-                <div className="text-lg font-black mb-6 uppercase" style={{ color: secondaryColor }}>
-                  Programming
+              {[
+                { title: 'Programming', skills: ['C++', 'Python', 'Java', 'SQL'] },
+                { title: 'Frameworks & Libraries', skills: ['FastAPI', 'Flask', 'PyTorch', 'Ultralytics', 'CrewAI', 'OpenClaw'] },
+                { title: 'DevOps & Tools', skills: ['Docker', 'Git', 'Linux', 'PostgreSQL'] },
+                { title: 'Cloud', skills: ['Azure', 'Cloud GPU (RunPod)'] },
+              ].map((category) => (
+                <div 
+                  key={category.title}
+                  className="p-6"
+                  style={{ 
+                    borderLeft: `4px solid ${secondaryColor}`,
+                    backgroundColor: isLightMode ? `${secondaryColor}08` : `${secondaryColor}10`
+                  }}
+                >
+                  <div className="text-lg font-black mb-6 uppercase" style={{ color: secondaryColor }}>
+                    {category.title}
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {category.skills.map((skill) => (
+                      <span 
+                        key={skill}
+                        className="px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-300 cursor-default"
+                        style={{ 
+                          border: `2px solid ${secondaryColor}`,
+                          color: secondaryColor
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isMobile) {
+                            e.currentTarget.style.backgroundColor = secondaryColor
+                            e.currentTarget.style.color = isLightMode ? '#f5f5f5' : '#000000'
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isMobile) {
+                            e.currentTarget.style.backgroundColor = 'transparent'
+                            e.currentTarget.style.color = secondaryColor
+                          }
+                        }}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {['C++', 'Python', 'Java', 'SQL', 'Generative AI', 'APIs'].map((skill) => (
-                    <span 
-                      key={skill}
-                      className="px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-300 cursor-default"
-                      style={{ 
-                        border: `2px solid ${secondaryColor}`,
-                        color: secondaryColor
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!isMobile) {
-                          e.currentTarget.style.backgroundColor = secondaryColor
-                          e.currentTarget.style.color = isLightMode ? '#f5f5f5' : '#000000'
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isMobile) {
-                          e.currentTarget.style.backgroundColor = 'transparent'
-                          e.currentTarget.style.color = secondaryColor
-                        }
-                      }}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              ))}
 
               <div 
                 className="p-6"
@@ -664,7 +755,7 @@ export default function Portfolio() {
                   className="w-12 h-12 flex items-center justify-center text-2xl font-black"
                   style={{ backgroundColor: secondaryColor, color: isLightMode ? '#f5f5f5' : '#000000' }}
                 >
-                  04
+                  05
                 </div>
                 <h2
                   className="text-3xl sm:text-5xl font-black uppercase tracking-wider"
