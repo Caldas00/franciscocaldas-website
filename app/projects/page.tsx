@@ -53,19 +53,18 @@ export default function ProjectsPage() {
 
   const projects = [
     {
+      id: "yolo-liga",
+      name: "YOLO Liga",
+      description:
+        "Computer vision system to automatically detect sponsor advertisements in Portuguese football broadcasts, giving companies a data-driven way to measure their broadcast ROI.",
+      link: "/projects/yolo-liga",
+    },
+    {
       id: "flappy-dqn",
       name: "Flappy Bird DQN",
       description:
         "Deep Q-Learning neural network that learns to play Flappy Bird through reinforcement learning with 25K parameters and epsilon-greedy exploration.",
       link: "/projects/flappy-dqn",
-      featured: true,
-    },
-    {
-      id: "aiexec",
-      name: "AI Executable Prompt",
-      description:
-        "Execute .ai scripts directly from your terminal, turning natural-language instructions into real actions with local-first architecture.",
-      link: "/projects/aiexec",
     },
   ]
 
@@ -120,26 +119,7 @@ export default function ProjectsPage() {
                     }
                   }}
                 >
-                  {project.featured && (
-                    <div className="mb-4 flex justify-center"> {/* Flex para centrar o vídeo */}
-    <div 
-      className="border-2 p-1 inline-block" // "inline-block" faz a borda colar ao vídeo
-      style={{ borderColor: secondaryColor }}
-    >
-      <video
-        className="max-w-[400px] w-full h-auto block" // Define o tamanho máximo aqui
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-      >
-        <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/pedaco-O2t1LkINYDTe59cgPwZLdgPMUsPESa.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
-  </div>
-)}
+
                   <h2
                     className="text-2xl sm:text-3xl font-black mb-3 uppercase transition-colors"
                     style={{ color: secondaryColor }}
