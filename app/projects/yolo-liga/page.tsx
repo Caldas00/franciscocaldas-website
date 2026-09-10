@@ -188,13 +188,31 @@ export default function YoloLigaPage() {
           </div>
 
           {/* Use Case */}
-          <div className="border p-6" style={{ borderColor: borderColor }}>
+          <div className="border p-6 mb-8" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               Use Case
             </h3>
             <p className="text-sm sm:text-base leading-relaxed opacity-90">
               This system enables sponsors and broadcasters to automatically measure advertisement visibility during live football matches. By detecting when and how long sponsor logos appear on screen, companies can quantify their broadcast ROI with precise, frame-by-frame data instead of relying on manual estimates.
             </p>
+          </div>
+
+          {/* Sample Output */}
+          <div className="border p-6" style={{ borderColor: borderColor }}>
+            <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
+              Sample Output
+            </h3>
+            <p className="text-sm sm:text-base leading-relaxed opacity-90 mb-6">
+              Full frame-by-frame sponsor detection report for the second half of Sporting CP vs. AFS (Liga Portugal Betclic, Matchday 14, 14/12/2025).
+            </p>
+            <a
+              href="/2526_LIGAPORTUGALBETCLIC_J14_SPORTINGCP-AFS_14122025_2P_analysis.xlsx"
+              download="YOLO-Liga_SportingCP-AFS_analysis.xlsx"
+              className="inline-flex items-center gap-3 border-2 px-6 py-3 text-sm uppercase font-bold hover:opacity-70 transition-opacity"
+              style={{ borderColor: secondaryColor, color: secondaryColor }}
+            >
+              <span>↓</span> Download Analysis (XLSX, 7.9 MB)
+            </a>
           </div>
         </div>
       </div>
