@@ -79,6 +79,15 @@ export default function ProjectsPage() {
       color: isLightMode ? "#5A9B6B" : "#98D8A8",
       tag: "LLM / RAG",
     },
+    {
+      id: "marios-bombs-away",
+      name: "Mario's Bombs Away",
+      description:
+        "Double DQN agent that learned to play the original 1983 Nintendo Game & Watch in MAME, using LCD segments and hidden variables reverse-engineered from the chip's RAM. Best run: 44 bombs delivered in a single life.",
+      link: "/projects/marios-bombs-away",
+      color: isLightMode ? "#4A6FA5" : "#7399C6",
+      tag: "Reinforcement Learning",
+    },
   ]
 
   const bgColor = isLightMode ? "#f5f5f5" : "#000000"
