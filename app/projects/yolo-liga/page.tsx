@@ -106,7 +106,7 @@ export default function YoloLigaPage() {
               Developed a computer vision system to automatically detect sponsor advertisements in Portuguese football broadcasts, giving companies a data-driven way to measure their broadcast ROI.
             </p>
             <p className="text-base sm:text-lg leading-relaxed">
-              Benchmarked YOLOv8 (s, m) and YOLO11 (m, l) on a dataset of 8,000+ images. YOLO11l, trained on a cloud NVIDIA RTX 6000 Ada, achieved a mAP50-95 of 0.73 — sufficient for production deployment in real-time stream analysis.
+              Benchmarked YOLOv8 (s, m) and YOLO11 (m, l) on a dataset of 3,000+ images. YOLO11l, trained on a cloud NVIDIA RTX 6000 Ada, achieved a mAP50-95 of 0.73 — sufficient for production deployment in real-time stream analysis.
             </p>
           </div>
 
@@ -122,7 +122,7 @@ export default function YoloLigaPage() {
               </div>
               <div>
                 <div className="font-bold mb-2">Size:</div>
-                <div className="pl-4">8,000+ annotated images</div>
+                <div className="pl-4">3,000+ annotated images</div>
               </div>
               <div>
                 <div className="font-bold mb-2">Task:</div>

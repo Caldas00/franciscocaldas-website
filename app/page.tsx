@@ -195,13 +195,32 @@ export default function Portfolio() {
     }
   }, [currentIndex, fullName, isLoading, isTyping])
 
-  const education = [
+  const education: {
+    degree: string
+    institution: string
+    period: string
+    location: string
+    gpa?: string
+    note?: string
+    courses?: string
+    link: string
+  }[] = [
+    {
+      degree: "Master's in Artificial Intelligence",
+      institution: "University of Zurich (UZH)",
+      period: "September 2026 – July 2028 (Expected)",
+      location: "Zürich, Switzerland",
+      note: "Minor in Data Science",
+      link: "https://www.uzh.ch/en.html",
+    },
     {
       degree: "Bachelor's in Computer Science and Engineering",
       institution: "Instituto Superior Técnico – University of Lisbon",
-      period: "September 2023 – Present",
+      period: "September 2023 – July 2026",
       location: "Lisbon, Portugal",
-      gpa: "15.4 / 20",
+      gpa: "16 / 20",
+      courses:
+        "Artificial Intelligence (17/20), Machine Learning (17/20), Foundations of Programming (17/20), Algorithms and Data Structures (16/20)",
       link: "https://tecnico.ulisboa.pt/en/",
     },
     {
@@ -222,16 +241,16 @@ export default function Portfolio() {
       period: "July 2025 – September 2025",
       location: "Lisbon, Portugal",
       description:
-        "Working in a fast-paced Agile team to develop an automated financial management AI bot for internal use and client deployment. Building core features using Generative AI, .NET, Python, Java, HTML and JavaScript.",
+        "Developed an AI-driven integration platform bridging enterprise CRM and ERP systems, automating complex data flows and cross-platform synchronization. Engineered a full-stack Intelligent Document Processing (IDP) component in Python and Java to extract data from financial documents, delivering production-ready APIs that reduced manual data entry by over 50%.",
       link: "https://innowave.tech",
     },
     {
       title: "Electronics Team Member",
       company: "Instituto Superior Técnico – Rocket Experiment Division (AeroTec)",
-      period: "March 2025 - Present",
+      period: "March 2025 – March 2026",
       location: "Lisbon, Portugal",
       description:
-        "Member of the Software & Hardware team in this student-led rocketry project. Contributing to the development of onboard systems and participating in technical planning.",
+        "Engineered onboard software for rocket telemetry and data acquisition, designing system architectures for real-time, low-latency sensor data processing and robust flight control logic. Developed embedded solutions in C targeting STM32 microcontrollers.",
       link: "https://aerotec.pt",
     },
     {
@@ -258,10 +277,10 @@ export default function Portfolio() {
     {
       title: "Volunteer",
       organization: "Fundação Candeia",
-      period: "September 2025 – Present",
+      period: "September 2025 – August 2026",
       location: "Lisbon, Portugal",
       description:
-        "Organize weekly activities for children in foster care homes, fostering their social and emotional development. Coordinate with a team of volunteers to plan engaging educational and recreational programs.",
+        "Organized weekly activities for children in foster care homes and coordinated with fellow volunteers on educational and recreational programs. Led summer activities for children with special needs, adapting programs to their individual abilities.",
       link: "https://www.candeia.org",
     },
   ]
@@ -354,7 +373,7 @@ export default function Portfolio() {
                     color: secondaryColor
                   }}
                 >
-                  Computer Science & Engineering Student
+                  MSc Artificial Intelligence Student
                 </div>
               </div>
             </div>
@@ -386,7 +405,7 @@ export default function Portfolio() {
                 <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: secondaryColor }} />
                 <div className="text-left">
                   <div className="text-xs uppercase tracking-wider opacity-60">Location</div>
-                  <span className="text-sm sm:text-base font-bold">Lisbon, Portugal</span>
+                  <span className="text-sm sm:text-base font-bold">Zürich, Switzerland</span>
                 </div>
               </div>
               <div 
@@ -400,7 +419,8 @@ export default function Portfolio() {
                 <Phone className="w-5 h-5 flex-shrink-0" style={{ color: secondaryColor }} />
                 <div className="text-left">
                   <div className="text-xs uppercase tracking-wider opacity-60">Phone</div>
-                  <span className="text-sm sm:text-base font-bold">(+351) 962888488</span>
+                  <span className="text-sm sm:text-base font-bold block">(+41) 762142733</span>
+                  <span className="text-sm sm:text-base font-bold block">(+351) 962888488</span>
                 </div>
               </div>
             </div>
@@ -481,14 +501,22 @@ export default function Portfolio() {
                       className="border-t-2 pt-4 flex flex-wrap gap-4"
                       style={{ borderColor: `${secondaryColor}50` }}
                     >
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs uppercase tracking-wider opacity-60">GPA</span>
-                        <span className="font-black text-lg" style={{ color: secondaryColor }}>{edu.gpa}</span>
-                      </div>
+                      {edu.gpa && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs uppercase tracking-wider opacity-60">GPA</span>
+                          <span className="font-black text-lg" style={{ color: secondaryColor }}>{edu.gpa}</span>
+                        </div>
+                      )}
                       {edu.note && (
                         <div className="flex items-center gap-2">
                           <span className="text-xs uppercase tracking-wider opacity-60">Note</span>
                           <span className="font-bold">{edu.note}</span>
+                        </div>
+                      )}
+                      {edu.courses && (
+                        <div className="flex items-baseline gap-2 w-full">
+                          <span className="text-xs uppercase tracking-wider opacity-60 flex-shrink-0">Courses</span>
+                          <span className="text-sm sm:text-base">{edu.courses}</span>
                         </div>
                       )}
                     </div>
@@ -817,7 +845,8 @@ export default function Portfolio() {
                     <Phone className="w-6 h-6 flex-shrink-0" style={{ color: secondaryColor }} />
                     <div>
                       <div className="text-xs uppercase tracking-wider opacity-60 mb-1">Phone</div>
-                      <span className="text-sm font-bold">(+351) 962888488</span>
+                      <span className="text-sm font-bold block">(+41) 762142733</span>
+                      <span className="text-sm font-bold block">(+351) 962888488</span>
                     </div>
                   </div>
                   <div 
@@ -831,7 +860,7 @@ export default function Portfolio() {
                     <MapPin className="w-6 h-6 flex-shrink-0" style={{ color: secondaryColor }} />
                     <div>
                       <div className="text-xs uppercase tracking-wider opacity-60 mb-1">Location</div>
-                      <span className="text-sm font-bold">Lisbon, Portugal</span>
+                      <span className="text-sm font-bold">Zürich, Switzerland</span>
                     </div>
                   </div>
                 </div>
