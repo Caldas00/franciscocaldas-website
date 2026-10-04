@@ -70,6 +70,15 @@ export default function ProjectsPage() {
       color: isLightMode ? "#CC8A3D" : "#FFB366",
       tag: "Reinforcement Learning",
     },
+    {
+      id: "rag-financial-accounting",
+      name: "RAG Financial Accounting",
+      description:
+        "Retrieval-Augmented Generation chatbot built to help my brother study Financial Accounting, answering questions only from the course notes and citing the source slide and page.",
+      link: "/projects/rag-financial-accounting",
+      color: isLightMode ? "#5A9B6B" : "#98D8A8",
+      tag: "LLM / RAG",
+    },
   ]
 
   const bgColor = isLightMode ? "#f5f5f5" : "#000000"
