@@ -85,7 +85,7 @@ export default function ProjectsPage() {
       description:
         "Double DQN agent that learned to play the original 1983 Nintendo Game & Watch in MAME, using LCD segments and hidden variables reverse-engineered from the chip's RAM. Best run: 44 bombs delivered in a single life.",
       link: "/projects/marios-bombs-away",
-      color: isLightMode ? "#4A6FA5" : "#7399C6",
+      color: isLightMode ? "#C94F6D" : "#F08BA0",
       tag: "Reinforcement Learning",
     },
   ]
@@ -123,12 +123,12 @@ export default function ProjectsPage() {
           </div>
 
           {/* Projects Grid */}
-          <div className="grid gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projects.map((project) => (
               <div key={project.id}>
                 <Link
                   href={project.link}
-                  className="border-2 p-6 block transition-all group relative overflow-hidden"
+                  className="border-2 p-6 h-full flex flex-col items-start transition-all group relative overflow-hidden"
                   style={{ borderColor: project.color }}
                   onMouseEnter={(e) => {
                     if (!isMobile) {
@@ -169,7 +169,7 @@ export default function ProjectsPage() {
                   />
                   
                   <div
-                    className="text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2"
+                    className="mt-auto text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2"
                     style={{ color: project.color }}
                   >
                     Read more

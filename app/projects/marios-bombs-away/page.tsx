@@ -19,14 +19,14 @@ const ExternalLink = ({ className }: { className?: string }) => (
 )
 
 export default function MariosBombsAwayPage() {
-  const [secondaryColor, setSecondaryColor] = useState("#4A6FA5")
+  const [secondaryColor, setSecondaryColor] = useState("#C94F6D")
   const [colorIndex, setColorIndex] = useState(0)
   const [showHelp, setShowHelp] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isLightMode, setIsLightMode] = useState(true)
 
-  const colors = ["#7399C6", "#FFB366", "#98D8A8"]
-  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B"]
+  const colors = ["#F08BA0", "#7399C6", "#FFB366", "#98D8A8"]
+  const lightModeColors = ["#C94F6D", "#4A6FA5", "#CC8A3D", "#5A9B6B"]
 
   useEffect(() => {
     const checkMobile = () => {
