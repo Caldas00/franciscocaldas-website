@@ -19,14 +19,14 @@ const ExternalLink = ({ className }: { className?: string }) => (
 )
 
 export default function FlappyDQNPage() {
-  const [secondaryColor, setSecondaryColor] = useState("#4A6FA5")
-  const [colorIndex, setColorIndex] = useState(0)
+  const [secondaryColor, setSecondaryColor] = useState("#CC8A3D")
+  const [colorIndex, setColorIndex] = useState(1)
   const [showHelp, setShowHelp] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isLightMode, setIsLightMode] = useState(true)
 
-  const colors = ["#7399C6", "#FFB366", "#98D8A8"]
-  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B"]
+  const colors = ["#7399C6", "#FFB366", "#98D8A8", "#F08BA0"]
+  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B", "#C94F6D"]
 
   useEffect(() => {
     const checkMobile = () => {

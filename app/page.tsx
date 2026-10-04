@@ -85,8 +85,8 @@ export default function Portfolio() {
   const [isMobile, setIsMobile] = useState(false)
   const [isLightMode, setIsLightMode] = useState(true)
 
-  const colors = ["#7399C6", "#FFB366", "#98D8A8"]
-  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B"]
+  const colors = ["#7399C6", "#FFB366", "#98D8A8", "#F08BA0"]
+  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B", "#C94F6D"]
   const fullName = "Francisco Caldas."
 
   const educationRef = useRef<HTMLElement>(null)

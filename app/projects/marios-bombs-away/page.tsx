@@ -20,13 +20,13 @@ const ExternalLink = ({ className }: { className?: string }) => (
 
 export default function MariosBombsAwayPage() {
   const [secondaryColor, setSecondaryColor] = useState("#C94F6D")
-  const [colorIndex, setColorIndex] = useState(0)
+  const [colorIndex, setColorIndex] = useState(3)
   const [showHelp, setShowHelp] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isLightMode, setIsLightMode] = useState(true)
 
-  const colors = ["#F08BA0", "#7399C6", "#FFB366", "#98D8A8"]
-  const lightModeColors = ["#C94F6D", "#4A6FA5", "#CC8A3D", "#5A9B6B"]
+  const colors = ["#7399C6", "#FFB366", "#98D8A8", "#F08BA0"]
+  const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B", "#C94F6D"]
 
   useEffect(() => {
     const checkMobile = () => {
@@ -337,7 +337,7 @@ export default function MariosBombsAwayPage() {
           </div>
 
           {/* Training History */}
-          <div className="border p-6 mb-8" style={{ borderColor: borderColor }}>
+          <div className="border p-6" style={{ borderColor: borderColor }}>
             <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
               What Made the Difference
             </h3>
@@ -347,24 +347,6 @@ export default function MariosBombsAwayPage() {
               <li>Lowering the exploration floor from 0.05 to 0.01 in phase 2, which doubled the training average</li>
               <li>Keeping truncated episodes in the buffer as non-terminal, instead of discarding the best runs</li>
             </ol>
-          </div>
-
-          {/* Limitations */}
-          <div className="border p-6" style={{ borderColor: borderColor }}>
-            <h3 className="text-2xl font-black uppercase mb-6" style={{ color: secondaryColor }}>
-              Limitations &amp; Next Steps
-            </h3>
-            <ul className="list-disc pl-6 space-y-3 text-sm sm:text-base opacity-90">
-              <li>Only one life and a fixed speed, while the full game has 3 lives and keeps accelerating</li>
-              <li>
-                The torch timer is still unidentified, likely the missing information to go from ~91% to ~98% success
-                per bomb
-              </li>
-              <li>
-                Planned experiments: tabular Q-learning, DQN vs Double DQN, full-RAM input with permutation importance,
-                frame stacking and a CNN on the screen image
-              </li>
-            </ul>
           </div>
         </div>
       </div>

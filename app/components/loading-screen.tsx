@@ -6,7 +6,7 @@ export default function LoadingScreen() {
   const [progress, setProgress] = useState(0)
   const [colorIndex, setColorIndex] = useState(0)
   
-  const colors = ["#7399C6", "#FFB366", "#98D8A8"]
+  const colors = ["#7399C6", "#FFB366", "#98D8A8", "#F08BA0"]
 
   useEffect(() => {
     const duration = 4000 // 4 seconds
