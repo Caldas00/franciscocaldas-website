@@ -75,8 +75,7 @@ const ChevronDown = ({ className }: { className?: string }) => (
 
 export default function Portfolio() {
   const [isLoading, setIsLoading] = useState(false)
-  const [displayedText, setDisplayedText] = useState("")
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [typingRun, setTypingRun] = useState(0)
   const [secondaryColor, setSecondaryColor] = useState("#4A6FA5")
   const [colorIndex, setColorIndex] = useState(0)
   const [showHelp, setShowHelp] = useState(false)
@@ -89,6 +88,7 @@ export default function Portfolio() {
   const lightModeColors = ["#4A6FA5", "#CC8A3D", "#5A9B6B", "#C94F6D"]
   const fullName = "Francisco Caldas."
 
+  const nameRef = useRef<HTMLSpanElement>(null)
   const educationRef = useRef<HTMLElement>(null)
   const experienceRef = useRef<HTMLElement>(null)
   const skillsRef = useRef<HTMLElement>(null)
@@ -117,15 +117,8 @@ export default function Portfolio() {
   }
 
   const resetTypingAnimation = () => {
-    setDisplayedText("")
-    setCurrentIndex(0)
-    setIsTyping(true)
     setShowCursor(true)
-
-    setTimeout(() => {
-      setShowCursor(false)
-      setCurrentIndex(0)
-    }, 1000)
+    setTypingRun((run) => run + 1)
   }
 
   useEffect(() => {
@@ -183,17 +176,26 @@ export default function Portfolio() {
     }
   }, [])
 
+  // Typing animation writes straight to the DOM so it doesn't re-render the page
+  // every 120ms (that kept interrupting navigation on mobile).
   useEffect(() => {
-    if (!isLoading && isTyping && currentIndex < fullName.length) {
-      const timer = setTimeout(() => {
-        setDisplayedText(fullName.slice(0, currentIndex + 1))
-        setCurrentIndex(currentIndex + 1)
-      }, 120)
-      return () => clearTimeout(timer)
-    } else if (currentIndex >= fullName.length) {
-      setIsTyping(false)
-    }
-  }, [currentIndex, fullName, isLoading, isTyping])
+    const el = nameRef.current
+    if (isLoading || !isTyping || !el) return
+
+    el.textContent = ""
+    const startDelay = typingRun > 0 ? 1000 : 0
+    const timers = fullName.split("").map((char, index) =>
+      setTimeout(() => {
+        const span = document.createElement("span")
+        span.className = "relative inline-block"
+        span.textContent = char === " " ? "\u00A0" : char
+        el.appendChild(span)
+      }, startDelay + (index + 1) * 120),
+    )
+    if (startDelay) timers.push(setTimeout(() => setShowCursor(false), startDelay))
+
+    return () => timers.forEach(clearTimeout)
+  }, [fullName, isLoading, isTyping, typingRun])
 
   const education: {
     degree: string
@@ -346,13 +348,7 @@ export default function Portfolio() {
                   className="text-4xl sm:text-6xl md:text-8xl font-black mb-4 leading-none tracking-tight cursor-pointer"
                   onClick={resetTypingAnimation}
                 >
-                  {displayedText.split("").map((char, index) => (
-                    <span key={index} className="relative inline-block">
-                      <span className="relative" style={{ color: secondaryColor }}>
-                        {char === " " ? "\u00A0" : char}
-                      </span>
-                    </span>
-                  ))}
+                  <span ref={nameRef} style={{ color: secondaryColor }} />
                   <span
                     className={`inline-block w-1 h-10 sm:h-14 md:h-20 ml-2 align-middle ${showCursor ? "cursor-blink" : ""}`}
                     style={{ backgroundColor: textColor }}

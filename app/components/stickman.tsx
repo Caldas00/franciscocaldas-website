@@ -26,6 +26,12 @@ const MoonIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+const AsteriskIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeWidth={3.5} d="M12 2v20M3.34 7l17.32 10M3.34 17l17.32-10" />
+  </svg>
+)
+
 interface ReactiveAsteriskProps {
   secondaryColor: string
   onColorCycle: () => void
@@ -98,13 +104,17 @@ export default function ReactiveAsterisk({
               onClick={onToggleLightMode}
               onMouseEnter={() => setIsHoveringToggle(true)}
               onMouseLeave={() => setIsHoveringToggle(false)}
-              className="w-10 h-10 flex items-center justify-center opacity-70 hover:opacity-100 transition-all hover:scale-110"
+              className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center opacity-70 hover:opacity-100 transition-all hover:scale-110"
               style={{ color: secondaryColor }}
             >
-              {isLightMode ? <MoonIcon className="w-6 h-6" /> : <SunIcon className="w-6 h-6" />}
+              {isLightMode ? (
+                <MoonIcon className="w-7 h-7 md:w-8 md:h-8" />
+              ) : (
+                <SunIcon className="w-7 h-7 md:w-8 md:h-8" />
+              )}
             </button>
             <div
-              className="absolute -bottom-8 right-0 text-xs font-mono opacity-60 transition-all duration-300 whitespace-nowrap"
+              className="hidden md:block absolute top-full mt-1 right-0 text-xs font-mono opacity-60 transition-all duration-300 whitespace-nowrap"
               style={{ color: textColor }}
             >
               {isHoveringToggle ? "switch!" : isLightMode ? "dark mode" : "light mode"}
@@ -115,16 +125,16 @@ export default function ReactiveAsterisk({
         {/* Asterisk */}
         <div ref={asteriskRef} className="cursor-pointer relative">
           <div
-            className="text-4xl md:text-6xl font-black opacity-70 select-none font-mono transition-all duration-300 ease-out hover:opacity-100 hover:scale-110"
+            className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center opacity-70 select-none transition-all duration-300 ease-out hover:opacity-100 hover:scale-110"
             style={{ color: secondaryColor }}
             onClick={onColorCycle}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
-            *
+            <AsteriskIcon className="w-7 h-7 md:w-8 md:h-8" />
           </div>
           <div
-            className="absolute -bottom-8 right-0 text-xs font-mono opacity-60 transition-all duration-300 whitespace-nowrap"
+            className="hidden md:block absolute top-full mt-6 right-0 text-xs font-mono opacity-60 transition-all duration-300 whitespace-nowrap"
             style={{ color: textColor }}
           >
             {isHovering ? "dot it!!!" : "click to change color"}
