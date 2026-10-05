@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const SunIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,6 +51,10 @@ export default function ReactiveAsterisk({
   const borderColor = isLightMode ? "#1a1a1a" : "#ffffff"
   const bgColor = isLightMode ? "#f5f5f5" : "#000000"
 
+  const pathname = usePathname()
+  const isHomeActive = pathname === "/"
+  const isProjectsActive = pathname.startsWith("/projects")
+
   return (
     <>
       {/* Floating navigation bar */}
@@ -58,20 +63,15 @@ export default function ReactiveAsterisk({
         style={{ backgroundColor: bgColor, borderColor: borderColor }}
       >
         <div className="flex items-center h-12">
-          {/* FC Logo */}
-          <Link
-            href="/"
-            className="text-lg font-black opacity-80 select-none font-mono hover:opacity-100 transition-opacity px-6 border-r-[3px] h-full flex items-center"
-            style={{ color: secondaryColor, borderColor: borderColor }}
-          >
-            FC
-          </Link>
-
           {/* Home Link */}
           <Link
             href="/"
-            className="text-lg font-black uppercase tracking-wider hover:brightness-125 transition-all px-6 border-r-[3px] h-full flex items-center"
-            style={{ color: secondaryColor, borderColor: borderColor }}
+            className="text-sm md:text-lg font-black uppercase tracking-wider hover:brightness-125 transition-all px-4 md:px-6 border-r-[3px] h-full flex items-center"
+            style={{
+              color: isHomeActive ? "#ffffff" : secondaryColor,
+              backgroundColor: isHomeActive ? secondaryColor : "transparent",
+              borderColor: borderColor,
+            }}
           >
             Home
           </Link>
@@ -79,15 +79,18 @@ export default function ReactiveAsterisk({
           {/* Projects Link */}
           <Link
             href="/projects"
-            className="text-lg font-black uppercase tracking-wider hover:brightness-125 transition-all px-6 h-full flex items-center"
-            style={{ color: secondaryColor }}
+            className="text-sm md:text-lg font-black uppercase tracking-wider hover:brightness-125 transition-all px-4 md:px-6 h-full flex items-center"
+            style={{
+              color: isProjectsActive ? "#ffffff" : secondaryColor,
+              backgroundColor: isProjectsActive ? secondaryColor : "transparent",
+            }}
           >
             Projects
           </Link>
         </div>
       </div>
 
-      <div className="fixed top-4 right-4 z-40 flex items-center gap-4 h-12">
+      <div className="fixed top-4 right-4 z-40 flex items-center gap-2 md:gap-4 h-12">
         {/* Light/Dark mode toggle */}
         {onToggleLightMode && (
           <div className="relative">
