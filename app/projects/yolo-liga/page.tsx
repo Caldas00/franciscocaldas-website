@@ -220,8 +220,7 @@ export default function YoloLigaPage() {
       {/* Footer */}
       <footer className="py-8 px-4 border-t" style={{ borderColor: borderColor }}>
         <div className="max-w-4xl mx-auto text-center">
-          <div className="text-sm opacity-80 mb-2">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-          <div className="text-sm opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
+          <div className="text-sm opacity-80">&copy; 2025 Francisco Caldas. All rights reserved.</div>
         </div>
       </footer>
 

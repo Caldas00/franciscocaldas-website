@@ -959,8 +959,7 @@ export default function Portfolio() {
               <div className="text-2xl font-black" style={{ color: secondaryColor }}>FC.</div>
             </div>
             <div className="text-center md:text-right">
-              <div className="text-sm opacity-80 mb-1">&copy; 2025 Francisco Caldas. All rights reserved.</div>
-              <div className="text-xs opacity-60">Daily reader | Tennis enthusiast | Future Software Engineer</div>
+              <div className="text-sm opacity-80">&copy; 2025 Francisco Caldas. All rights reserved.</div>
             </div>
           </div>
         </div>
