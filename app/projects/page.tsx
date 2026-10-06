@@ -88,6 +88,17 @@ export default function ProjectsPage() {
       color: isLightMode ? "#C94F6D" : "#F08BA0",
       tag: "Reinforcement Learning",
     },
+    {
+      id: "pixel-airport",
+      name: "Pixelport ATC",
+      description:
+        "A small pixel-art airport game in plain JavaScript where you are the controller: clear arrivals to land, release them from the gate and send them off again before anyone runs out of fuel.",
+      // Static game served from public/pixelart, opened directly with no project write-up
+      link: "/pixelart/index.html",
+      color: isLightMode ? "#4A6FA5" : "#7399C6",
+      tag: "Game",
+      cta: "Play",
+    },
   ]
 
   const bgColor = isLightMode ? "#f5f5f5" : "#000000"
@@ -124,60 +135,64 @@ export default function ProjectsPage() {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map((project) => (
-              <div key={project.id}>
-                <Link
-                  href={project.link}
-                  className="border-2 p-6 h-full flex flex-col items-start transition-all group relative overflow-hidden"
-                  style={{ borderColor: project.color }}
-                  onMouseEnter={(e) => {
-                    if (!isMobile) {
-                      e.currentTarget.style.backgroundColor = isLightMode 
-                        ? `${project.color}10` 
-                        : `${project.color}15`
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isMobile) {
-                      e.currentTarget.style.backgroundColor = 'transparent'
-                    }
-                  }}
-                >
-                  {/* Tag */}
-                  <div 
-                    className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider mb-4"
-                    style={{ 
-                      backgroundColor: project.color,
-                      color: isLightMode ? '#f5f5f5' : '#000000'
+            {projects.map((project) => {
+              // The game is a static page in public/, so it needs a full page load rather than client-side routing
+              const CardLink = project.link.startsWith("/projects/") ? Link : "a"
+              return (
+                <div key={project.id}>
+                  <CardLink
+                    href={project.link}
+                    className="border-2 p-6 h-full flex flex-col items-start transition-all group relative overflow-hidden"
+                    style={{ borderColor: project.color }}
+                    onMouseEnter={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = isLightMode 
+                          ? `${project.color}10` 
+                          : `${project.color}15`
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isMobile) {
+                        e.currentTarget.style.backgroundColor = 'transparent'
+                      }
                     }}
                   >
-                    {project.tag}
-                  </div>
-                  
-                  <h2
-                    className="text-2xl sm:text-3xl font-black mb-3 uppercase transition-colors"
-                    style={{ color: project.color }}
-                  >
-                    {project.name}
-                  </h2>
-                  <p className="text-sm sm:text-base leading-relaxed mb-4 opacity-90">{project.description}</p>
-                  
-                  {/* Accent line */}
-                  <div 
-                    className="absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-300"
-                    style={{ backgroundColor: project.color }}
-                  />
-                  
-                  <div
-                    className="mt-auto text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2"
-                    style={{ color: project.color }}
-                  >
-                    Read more
-                    <span className="group-hover:translate-x-1 transition-transform">→</span>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                    {/* Tag */}
+                    <div 
+                      className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider mb-4"
+                      style={{ 
+                        backgroundColor: project.color,
+                        color: isLightMode ? '#f5f5f5' : '#000000'
+                      }}
+                    >
+                      {project.tag}
+                    </div>
+                    
+                    <h2
+                      className="text-2xl sm:text-3xl font-black mb-3 uppercase transition-colors"
+                      style={{ color: project.color }}
+                    >
+                      {project.name}
+                    </h2>
+                    <p className="text-sm sm:text-base leading-relaxed mb-4 opacity-90">{project.description}</p>
+                    
+                    {/* Accent line */}
+                    <div 
+                      className="absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-300"
+                      style={{ backgroundColor: project.color }}
+                    />
+                    
+                    <div
+                      className="mt-auto text-sm font-bold uppercase tracking-wide inline-flex items-center gap-2"
+                      style={{ color: project.color }}
+                    >
+                      {project.cta ?? "Read more"}
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </CardLink>
+                </div>
+                )
+            })}
           </div>
         </div>
       </div>
