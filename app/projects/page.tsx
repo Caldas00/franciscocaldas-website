@@ -95,7 +95,7 @@ export default function ProjectsPage() {
         "A small pixel-art airport game in plain JavaScript where you are the controller: clear arrivals to land, release them from the gate and send them off again before anyone runs out of fuel.",
       // Static game served from public/pixelart, opened directly with no project write-up
       link: "/pixelart/index.html",
-      color: isLightMode ? "#4A6FA5" : "#7399C6",
+      color: isLightMode ? "#7E62B3" : "#B39DDB",
       tag: "Game",
       cta: "Play",
     },
