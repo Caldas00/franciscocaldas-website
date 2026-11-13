@@ -1,6 +1,6 @@
 # franciscocaldas.me
 
-Personal portfolio website, live at [franciscocaldas.me](https://franciscocaldas.me).
+Personal portfolio website, live at [fcaldas.com](https://fcaldas.com).
 
 ## Tech Stack
 
