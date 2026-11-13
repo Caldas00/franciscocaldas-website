@@ -111,6 +111,7 @@ export default function MariosBombsAwayPage() {
               Your browser does not support the video tag.
             </video>
           </div>
+          <p className="-mt-6 mb-8 text-sm italic opacity-70">The game is accelerated 8x.</p>
 
           {/* GitHub Link */}
           <div className="border p-6 mb-12" style={{ borderColor: borderColor }}>
